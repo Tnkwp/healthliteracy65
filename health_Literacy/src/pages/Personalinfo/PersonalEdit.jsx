@@ -5,11 +5,11 @@ function EditPage() {
   const [formData, setFormData] = useState({
     personalInfo: {
       nameTitle: 'นาย',
-      firstName: 'อนุวัฒน์',
-      lastName: 'สวัสดิ์วงศ์',
+      Name: 'อนุวัฒน์ สวัสดิ์วงศ์',
       idCard: '1234567890123',
       dob: '29/07/2512',
       age: 55,
+      bloodType: 'O',
       weight: 68,
       height: 171,
       maritalStatus: 'สมรส',
@@ -77,92 +77,100 @@ function EditPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 bg-white shadow-md rounded-lg">
+    <div className=" p-4 bg-white shadow-md rounded-lg">
       <form onSubmit={handleSubmit} className="space-y-8">
         <h2 className="text-2xl font-bold text-center">แก้ไขข้อมูลส่วนตัว</h2>
 
         <section className="space-y-4">
           <h3 className="text-lg font-semibold">1. ข้อมูลส่วนบุคคล</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium">คำนำหน้า</label>
-              <select
-                value={formData.personalInfo.nameTitle}
+          <div className=" gap-4">
+            <div className="flex items-center space-x-4">
+            <label className="text-sm font-medium">ชื่อ - นามสกุล</label>
+  
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="นาย"
+                value="นาย"
+                checked={formData.personalInfo.nameTitle === 'นาย'}
                 onChange={(e) => handleChange(e, 'personalInfo', 'nameTitle')}
-                className="w-full p-2 border rounded"
-              >
-                <option value="นาย">นาย</option>
-                <option value="นาง">นาง</option>
-                <option value="นางสาว">นางสาว</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium">ชื่อ</label>
+              />
+            <label htmlFor="นาย" className="text-sm">นาย</label>
+    
+              <input
+                type="checkbox"
+                id="นาง"
+                value="นาง"
+                checked={formData.personalInfo.nameTitle === 'นาง'}
+                onChange={(e) => handleChange(e, 'personalInfo', 'nameTitle')}
+              />
+              <label htmlFor="นาง" className="text-sm">นาง</label>
+    
+              <input
+                type="checkbox"
+                id="นางสาว"
+                value="นางสาว"
+                checked={formData.personalInfo.nameTitle === 'นางสาว'}
+                onChange={(e) => handleChange(e, 'personalInfo', 'nameTitle')}
+              />
+              <label htmlFor="นางสาว" className="text-sm">นางสาว</label>
+              </div>
+  
               <input
                 type="text"
-                value={formData.personalInfo.firstName}
-                onChange={(e) => handleChange(e, 'personalInfo', 'firstName')}
-                className="w-full p-2 border rounded"
-                placeholder="ชื่อ"
+                value={formData.personalInfo.Name}
+                onChange={(e) => handleChange(e, 'personalInfo', 'Name')}
+                className=" p-2 border rounded"
+                placeholder="ชื่อ-นามสกุล"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">นามสกุล</label>
-              <input
-                type="text"
-                value={formData.personalInfo.lastName}
-                onChange={(e) => handleChange(e, 'personalInfo', 'lastName')}
-                className="w-full p-2 border rounded"
-                placeholder="นามสกุล"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">เลขที่บัตรประชาชน</label>
+              <label className="text-sm font-medium">เลขที่บัตรประชาชน</label>
               <input
                 type="text"
                 value={formData.personalInfo.idCard}
                 onChange={(e) => handleChange(e, 'personalInfo', 'idCard')}
-                className="w-full p-2 border rounded"
+                className="p-2 border rounded"
                 placeholder="เลขที่บัตรประชาชน"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">วัน/เดือน/ปีเกิด</label>
+              <label className=" text-sm font-medium">วัน/เดือน/ปีเกิด</label>
               <input
-                type="text"
+                type="date"
                 value={formData.personalInfo.dob}
                 onChange={(e) => handleChange(e, 'personalInfo', 'dob')}
-                className="w-full p-2 border rounded"
+                className=" p-2 border rounded"
                 placeholder="วัน/เดือน/ปีเกิด"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">อายุ</label>
+              <label className="text-sm font-medium">อายุ</label>
               <input
                 type="text"
                 value={formData.personalInfo.age}
                 onChange={(e) => handleChange(e, 'personalInfo', 'age')}
-                className="w-full p-2 border rounded"
+                className="p-2 border rounded"
                 placeholder="อายุ"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">น้ำหนัก</label>
+              <label className="text-sm font-medium">น้ำหนัก</label>
               <input
                 type="text"
                 value={formData.personalInfo.weight}
                 onChange={(e) => handleChange(e, 'personalInfo', 'weight')}
-                className="w-full p-2 border rounded"
+                className="p-2 border rounded"
                 placeholder="น้ำหนัก"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">ส่วนสูง</label>
+              <label className="text-sm font-medium">ส่วนสูง</label>
               <input
                 type="text"
                 value={formData.personalInfo.height}
                 onChange={(e) => handleChange(e, 'personalInfo', 'height')}
-                className="w-full p-2 border rounded"
+                className="p-2 border rounded"
                 placeholder="ส่วนสูง"
               />
             </div>

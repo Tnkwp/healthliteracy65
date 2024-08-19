@@ -79,12 +79,12 @@ const PersonalInfoForm = () => {
               </div>
               <div className="mb-4 flex flex-wrap items-center">
                 <label className="block mr-2">หมู่โลหิต</label>
-                <input type="text" className="border border-gray-300 p-2 rounded w-20" />
+                <input type="text" className="border border-gray-300 p-2 rounded w-20" id='bloodType'/>
                 <label className="ml-4">น้ำหนัก</label>
-                <input type="text" className="border border-gray-300 p-2 rounded w-20" />
+                <input type="text" className="border border-gray-300 p-2 rounded w-20" id='weight'/>
                 <label className="ml-2">กิโลกรัม</label>
                 <label className="ml-4">ส่วนสูง</label>
-                <input type="text" className="border border-gray-300 p-2 rounded w-20" />
+                <input type="text" className="border border-gray-300 p-2 rounded w-20" id='height' />
                 <label className="ml-2">เซนติเมตร</label>
               </div>
               <div className="mb-4 flex  ">
