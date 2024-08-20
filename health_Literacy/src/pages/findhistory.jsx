@@ -36,7 +36,7 @@ function ModalPage() {
             <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">ชื่อ-นามสกุล</label>
             <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required />
           </div>
-          <button type="submit" className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full">ค้นหา</button>
+          <Link><button type="submit" className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full">ค้นหา</button></Link>
         </form>
       </div>
     </div>
