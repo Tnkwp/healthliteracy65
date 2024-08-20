@@ -10,7 +10,7 @@ function ResultScreen() {
       <div className="flex flex-col p-10 mt-20 text-center ">
         <div className="bg-green-500 p-4 rounded-lg mb-4 text-white">
             <div className="flex justify-center mb-4">
-                    <img src="https://via.placeholder.com/50" alt="/" />
+                    <img src="/public/ผลประเมิน.png" alt="/" />
             </div>
             <div className="text-2xl font-bold">
                 <h2>ผลการประเมิน Health Literacy</h2>
@@ -20,7 +20,7 @@ function ResultScreen() {
         </div>
         <Link to={"/healthAssessmentTable"} ><div className="bg-yellow-500 p-4 rounded-lg mb-4 text-white">
             <div className="flex justify-center mb-4">
-                    <img src="https://via.placeholder.com/50" alt="/" />
+                    <img src="/public/ผลประเมิน.png" alt="/" />
             </div>
             <div className="text-2xl font-bold ">
                 <h2>ผลการประเมิน Health Literacy</h2>
@@ -30,7 +30,7 @@ function ResultScreen() {
         </div></Link>
         <Link to={"/chart"}><div className="bg-red-500 p-4 rounded-lg text-white">
             <div className="flex justify-center mb-4">
-                    <img src="https://via.placeholder.com/50" alt="" />
+                    <img src="/public/ผลประเมิน.png" alt="" />
             </div>
             <div className="text-2xl font-bold ">
                 <h2>ผลการประเมิน Health Literacy</h2>

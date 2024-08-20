@@ -7,7 +7,7 @@ const HealthLiteracy = () => {
             <div className="space-y-14">
                 <div className="bg-white p-6 rounded-lg shadow-lg w-[48rem] h-[30rem]  flex flex-col items-center justify-center text-center">
                     <div className="flex justify-center mb-4">
-                        <img src="https://via.placeholder.com/50" alt="Assessment Icon" />
+                        <img src="/public/แบบประเมิน.png" alt="Assessment Icon" />
                     </div>
                     <h2 className="text-4xl font-semibold text-gray-700 mb-5">แบบประเมิน Health Literacy</h2>
                     <p className="text-2xl text-gray-600 mb-5">โปรดเลือกตอบตามความเป็นจริง และตอบให้ครบทุกข้อ</p>
@@ -19,12 +19,12 @@ const HealthLiteracy = () => {
                 </div>
                 <div className="bg-green-500 p-6 rounded-lg shadow-lg w-[48rem] h-[30rem] flex flex-col items-center justify-center text-center">
                     <div className="flex justify-center mb-4">
-                        <img src="https://via.placeholder.com/50" alt="Results Icon" />
+                        <img src="/public/ผลประเมิน.png" alt="Results Icon" />
                     </div>
                     <h2 className="text-4xl font-semibold text-white mb-5">ผลการประเมิน Health Literacy</h2>
                     <p className="text-2xl text-white mb-5">คลิกเพื่อดูผลการประเมิน</p>
                     <Link to={"/result"}>
-                        <button className="bg-white text-black text-3xl py-2 px-4 px-4 h-[4.5rem] w-[17rem] rounded-2xl hover:bg-gray-200">
+                        <button className="bg-white text-black text-3xl py-2 px-4  h-[4.5rem] w-[17rem] rounded-2xl hover:bg-gray-200">
                             ผลการประเมิน
                         </button>
                     </Link>
