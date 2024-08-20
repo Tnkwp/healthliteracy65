@@ -11,7 +11,10 @@ import HealthAssessmentTable from './pages/Result/HealthAssessmentTable';
 import Chart from './pages/Result/Chart';
 import Quiz from './pages/Result/Quiz';
 import HealthLiteracyResults from './pages/Result/HealthLiteracyResults';
-
+import Quiz2 from './pages/Result/Quiz2';
+import Quiz3 from './pages/Result/Quiz3';
+import Quiz4 from './pages/Result/Quiz4';
+import Quiz5 from './pages/Result/Quiz5';
 
 function App() {
   return (
@@ -26,8 +29,11 @@ function App() {
         <Route path='healthAssessmentTable' element={<HealthAssessmentTable />} />
         <Route path='chart' element={<Chart />} />
         <Route path='quiz' element={<Quiz />} />
+        <Route path='quiz2' element={<Quiz2 />} />
+        <Route path='quiz3' element={<Quiz3 />} />
+        <Route path='quiz4' element={<Quiz4 />} />
+        <Route path='quiz5' element={<Quiz5 />} />
         <Route path='healthLiteracyResults' element={<HealthLiteracyResults />} />
-        
       </Routes>
     </div>
   );
