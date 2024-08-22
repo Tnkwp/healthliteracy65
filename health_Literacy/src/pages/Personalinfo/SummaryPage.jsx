@@ -16,6 +16,7 @@ const PersonalInfoSummary = () => {
           <div className="space-y-2">
             <p>ชื่อ - นามสกุล: <span className="font-medium">นายอนุวัตร์ สวัสดิ์วงค์</span></p>
             <p>หมายเลขบัตรประจำตัวประชาชน: <span className="font-medium">1234567890234</span></p>
+            <p>เพศ: <span className="font-medium">ชาย</span></p>
             <p>วัน/เดือน/ปีเกิด: <span className="font-medium">29/07/2512</span> อายุ: <span className="font-medium">55 ปี</span></p>
             <p>สถานภาพ: <span className="font-medium">สมรส</span></p>
             <p>ศาสนา: <span className="font-medium">พุทธ</span></p>
@@ -23,6 +24,11 @@ const PersonalInfoSummary = () => {
             <p>เชื้อชาติ: <span className="font-medium">ไทย</span></p>
             <p>อาชีพ: <span className="font-medium">รับจ้าง</span></p>
             <p>ระดับการศึกษา: <span className="font-medium">ประถมศึกษา</span></p>
+            <p>หมู่โลหิต: <span className="font-medium">O</span></p>
+            <p>น้ำหนัก: <span className="font-medium">70 กิโลกรัม</span></p>
+            <p>ส่วนสูง: <span className="font-medium">175 เซนติเมตร</span></p>
+            <p>สิทธิการรักษาพยาบาล: <span className="font-medium">สิทธิสวัสดิการข้าราชการ</span></p>
+            <p>ประกันสุขภาพ: <span className="font-medium">มี</span></p>
           </div>
         </section>
 
@@ -48,18 +54,18 @@ const PersonalInfoSummary = () => {
           </div>
         </section>
 
-        {/* ที่อยู่ตามทะเบียนบ้าน */}
+        
+
+        {/* ข้อมูลที่ทำงาน */}
         <section className="mb-6">
-          <h2 className="font-bold mb-2">4. ที่อยู่ตามทะเบียนบ้าน</h2>
+          <h2 className="font-bold mb-2">5. ข้อมูลที่ทำงาน</h2>
           <div className="space-y-2">
-            <p>บ้านเลขที่: <span className="font-medium">121</span> หมู่ที่: <span className="font-medium">5</span></p>
-            <p>ชื่อหมู่บ้าน: <span className="font-medium">สุขสันต์</span></p>
-            <p>ตำบล: <span className="font-medium">สันโค้ง</span> อำเภอ: <span className="font-medium">ดอกคำใต้</span></p>
-            <p>จังหวัด: <span className="font-medium">พะเยา</span> รหัสไปรษณีย์: <span className="font-medium">56140</span></p>
+            <p>ชื่อสถานที่ทำงาน/บริษัท: <span className="font-medium">บริษัทตัวอย่าง จำกัด</span></p>
+            <p>ที่อยู่ที่ทำงาน: <span className="font-medium">123/4 อาคาร ABC ถนนตัวอย่าง ตำบลตัวอย่าง อำเภอตัวอย่าง จังหวัดตัวอย่าง 12345</span></p>
+            <p>เบอร์โทรศัพท์ที่ทำงาน: <span className="font-medium">02-1234567</span></p>
           </div>
         </section>
 
-        
         <div className="flex justify-between">
           <Link to="/edit"><button className="bg-red-500 text-white px-4 py-2 rounded-lg">แก้ไข</button></Link>
           <Link to="/quiz"><button className="bg-green-500 text-white px-4 py-2 rounded-lg">เริ่มทำแบบประเมิน</button></Link>

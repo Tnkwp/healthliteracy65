@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 function EditPage() {
   const [formData, setFormData] = useState({
@@ -7,17 +7,20 @@ function EditPage() {
       nameTitle: 'นาย',
       Name: 'อนุวัฒน์ สวัสดิ์วงศ์',
       idCard: '1234567890123',
-      dob: '29/07/2512',
-      age: 55,
+      dob: '2512-07-29',
+      age: '55',
+      gender: 'ชาย',
+      maritalStatus: 'สมรส',
+      occupation: ['รับจ้างทั่วไป'],
       bloodType: 'O',
       weight: 68,
       height: 171,
-      maritalStatus: 'สมรส',
-      occupation: 'รับจ้างทั่วไป',
-      hasDisability: true,
+      medicalTreatmentRights: ['สิทธิประกันสังคม'],
+      insurance: 'ไม่มี',
     },
     contactInfo: {
-      mobile: '089-9966999',
+      mobile1: '089-9966999',
+      mobile2: '',
       facebook: 'Anuwat Sawatdiwong',
       idLine: '089-9966999',
       email: 'anuwatsawatdiwong99@gmail.com',
@@ -27,16 +30,18 @@ function EditPage() {
         houseNumber: '165/3',
         village: 'บ้านกลาง',
         alley: '1',
+        moo: '',
         road: '',
         subDistrict: 'เชียงแสน',
         district: 'เชียงแสน',
         province: 'พะเยา',
         postalCode: '56160',
       },
-      work: {
+      company: {
         companyName: 'สำนักงานขายกลางเชียงใหม่',
-        houseNumber: '1/21',
+        companyNumber: '1/21',
         village: 'บ้านกลาง',
+        moo: '',
         alley: '1',
         road: '',
         subDistrict: 'เชียงแสน',
@@ -70,62 +75,100 @@ function EditPage() {
     });
   };
 
+  const handleRadioChange = (e, section, field) => {
+    setFormData({
+      ...formData,
+      [section]: {
+        ...formData[section],
+        [field]: e.target.value,
+      },
+    });
+  };
+
+  const handleCheckboxChange = (e) => {
+  const { value, checked } = e.target;
+  setFormData((prevState) => ({
+    ...prevState,
+    personalInfo: {
+      ...prevState.personalInfo,
+      medicalTreatmentRights: checked
+        ? [...prevState.personalInfo.medicalTreatmentRights, value]
+        : prevState.personalInfo.medicalTreatmentRights.filter((item) => item !== value),
+    },
+  }));
+};
+
+  const handleCheckboxChangeOccupation = (e) => {
+  const { value, checked } = e.target;
+  setFormData((prevState) => ({
+    ...prevState,
+    personalInfo: {
+      ...prevState.personalInfo,
+      occupation: checked
+        ? [...prevState.personalInfo.occupation, value]
+        : prevState.personalInfo.occupation.filter((item) => item !== value),
+    },
+  }));
+};
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Updated Data:', formData);
-    
   };
 
   return (
-    <div className=" p-4 bg-white shadow-md rounded-lg">
+    <div className="p-4 bg-white shadow-md rounded-lg">
       <form onSubmit={handleSubmit} className="space-y-8">
         <h2 className="text-2xl font-bold text-center">แก้ไขข้อมูลส่วนตัว</h2>
 
+        {/* ข้อมูลส่วนบุคคล */}
         <section className="space-y-4">
           <h3 className="text-lg font-semibold">1. ข้อมูลส่วนบุคคล</h3>
-          <div className=" gap-4">
-            <div className="flex items-center space-x-4">
-            <label className="text-sm font-medium">ชื่อ - นามสกุล</label>
-  
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="นาย"
-                value="นาย"
-                checked={formData.personalInfo.nameTitle === 'นาย'}
-                onChange={(e) => handleChange(e, 'personalInfo', 'nameTitle')}
-              />
-            <label htmlFor="นาย" className="text-sm">นาย</label>
-    
-              <input
-                type="checkbox"
-                id="นาง"
-                value="นาง"
-                checked={formData.personalInfo.nameTitle === 'นาง'}
-                onChange={(e) => handleChange(e, 'personalInfo', 'nameTitle')}
-              />
-              <label htmlFor="นาง" className="text-sm">นาง</label>
-    
-              <input
-                type="checkbox"
-                id="นางสาว"
-                value="นางสาว"
-                checked={formData.personalInfo.nameTitle === 'นางสาว'}
-                onChange={(e) => handleChange(e, 'personalInfo', 'nameTitle')}
-              />
-              <label htmlFor="นางสาว" className="text-sm">นางสาว</label>
+          <div className="space-y-4">
+
+            {/* ชื่อ-นามสกุล */}
+            <div className='flex items-center '>
+              <label className="block text-sm font-medium mr-2">ชื่อ - นามสกุล</label>
+              <div className="flex items-center space-x-4">
+                <input
+                  type="radio"
+                  id="นาย"
+                  name="nameTitle"
+                  value="นาย"
+                  checked={formData.personalInfo.nameTitle === 'นาย'}
+                  onChange={(e) => handleRadioChange(e, 'personalInfo', 'nameTitle')}
+                />
+                <label htmlFor="นาย">นาย</label>
+                <input
+                  type="radio"
+                  id="นาง"
+                  name="nameTitle"
+                  value="นาง"
+                  checked={formData.personalInfo.nameTitle === 'นาง'}
+                  onChange={(e) => handleRadioChange(e, 'personalInfo', 'nameTitle')}
+                />
+                <label htmlFor="นาง">นาง</label>
+                <input
+                  type="radio"
+                  id="นางสาว"
+                  name="nameTitle"
+                  value="นางสาว"
+                  checked={formData.personalInfo.nameTitle === 'นางสาว'}
+                  onChange={(e) => handleRadioChange(e, 'personalInfo', 'nameTitle')}
+                />
+                <label htmlFor="นางสาว">นางสาว</label>
+                <input
+                  type="text"
+                  value={formData.personalInfo.Name}
+                  onChange={(e) => handleChange(e, 'personalInfo', 'Name')}
+                  className="p-2 border rounded"
+                  placeholder="ชื่อ-นามสกุล"
+                />
               </div>
-  
-              <input
-                type="text"
-                value={formData.personalInfo.Name}
-                onChange={(e) => handleChange(e, 'personalInfo', 'Name')}
-                className=" p-2 border rounded"
-                placeholder="ชื่อ-นามสกุล"
-              />
             </div>
+
+            {/* เลขบัตรประจำตัวประชาชน */}
             <div>
-              <label className="text-sm font-medium">เลขที่บัตรประชาชน</label>
+              <label className="block text-sm font-medium">เลขที่บัตรประชาชน</label>
               <input
                 type="text"
                 value={formData.personalInfo.idCard}
@@ -134,18 +177,42 @@ function EditPage() {
                 placeholder="เลขที่บัตรประชาชน"
               />
             </div>
+
+            {/* เพศ */}
+            <div className="flex items-center space-x-4">
+              <label className="block text-sm font-medium">เพศ</label>
+              <input
+                type="radio"
+                id="male"
+                name="gender"
+                value="ชาย"
+                checked={formData.personalInfo.gender === 'ชาย'}
+                onChange={(e) => handleRadioChange(e, 'personalInfo', 'gender')}
+              />
+              <label htmlFor="male">ชาย</label>
+              <input
+                type="radio"
+                id="female"
+                name="gender"
+                value="หญิง"
+                checked={formData.personalInfo.gender === 'หญิง'}
+                onChange={(e) => handleRadioChange(e, 'personalInfo', 'gender')}
+              />
+              <label htmlFor="female">หญิง</label>
+            </div>
             <div>
-              <label className=" text-sm font-medium">วัน/เดือน/ปีเกิด</label>
+              <label className="block text-sm font-medium">วัน/เดือน/ปีเกิด</label>
               <input
                 type="date"
                 value={formData.personalInfo.dob}
                 onChange={(e) => handleChange(e, 'personalInfo', 'dob')}
-                className=" p-2 border rounded"
-                placeholder="วัน/เดือน/ปีเกิด"
+                className="p-2 border rounded"
               />
             </div>
-            <div>
-              <label className="text-sm font-medium">อายุ</label>
+
+            {/* อายุ */}
+            <div className="flex items-center space-x-4">
+              <label className="block text-sm font-medium">อายุ</label>
               <input
                 type="text"
                 value={formData.personalInfo.age}
@@ -153,9 +220,12 @@ function EditPage() {
                 className="p-2 border rounded"
                 placeholder="อายุ"
               />
+              <span>ปี</span>
             </div>
-            <div>
-              <label className="text-sm font-medium">น้ำหนัก</label>
+
+            {/* น้ำหนัก */}
+            <div className="flex items-center space-x-4">
+              <label className="block text-sm font-medium">น้ำหนัก</label>
               <input
                 type="text"
                 value={formData.personalInfo.weight}
@@ -163,9 +233,12 @@ function EditPage() {
                 className="p-2 border rounded"
                 placeholder="น้ำหนัก"
               />
+              <span>กิโลกรัม</span>
             </div>
-            <div>
-              <label className="text-sm font-medium">ส่วนสูง</label>
+
+            {/* ส่วนสูง */}
+            <div className="flex items-center space-x-4">
+              <label className="block text-sm font-medium">ส่วนสูง</label>
               <input
                 type="text"
                 value={formData.personalInfo.height}
@@ -173,268 +246,532 @@ function EditPage() {
                 className="p-2 border rounded"
                 placeholder="ส่วนสูง"
               />
+              <span>เซนติเมตร</span>
+            </div>
+
+            {/* สถานะภาพ */}
+            <div className="flex items-center space-x-4">
+              <label className="block text-sm font-medium">สถานะภาพ</label>
+              <input
+                type="radio"
+                id="single"
+                name="maritalStatus"
+                value="โสด"
+                checked={formData.personalInfo.maritalStatus === 'โสด'}
+                onChange={(e) => handleRadioChange(e, 'personalInfo', 'maritalStatus')}
+              />
+              <label htmlFor="single">โสด</label>
+              <input
+                type="radio"
+                id="married"
+                name="maritalStatus"
+                value="สมรส"
+                checked={formData.personalInfo.maritalStatus === 'สมรส'}
+                onChange={(e) => handleRadioChange(e, 'personalInfo', 'maritalStatus')}
+              />
+              <label htmlFor="married">สมรส</label>
+              <input
+                type="radio"
+                id="divorced"
+                name="maritalStatus"
+                value="หย่าร้าง/หม้าย/แยกกันอยู่"
+                checked={formData.personalInfo.maritalStatus === 'หย่าร้าง/หม้าย/แยกกันอยู่'}
+                onChange={(e) => handleRadioChange(e, 'personalInfo', 'maritalStatus')}
+              />
+              <label htmlFor="divorced">หย่าร้าง/หม้าย/แยกกันอยู่</label>
+            </div>
+
+            {/* อาชีพ */}
+            <div className="space-y-4">
+  <label className="text-sm font-medium mb-2">อาชีพ</label>
+  
+  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="รับราชการ/รัฐวิสาหกิจ"
+        name="occupation"
+        value="รับราชการ/รัฐวิสาหกิจ"
+        checked={formData.personalInfo.occupation.includes('รับราชการ/รัฐวิสาหกิจ')}
+        onChange={handleCheckboxChangeOccupation}
+        className="mr-2"
+      />
+      <label htmlFor="รับราชการ/รัฐวิสาหกิจ">รับราชการ/รัฐวิสาหกิจ</label>
+    </div>
+
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="ค้าขาย/ธุรกิจส่วนตัว"
+        name="occupation"
+        value="ค้าขาย/ธุรกิจส่วนตัว"
+        checked={formData.personalInfo.occupation.includes('ค้าขาย/ธุรกิจส่วนตัว')}
+        onChange={handleCheckboxChangeOccupation}
+        className="mr-2"
+      />
+      <label htmlFor="ค้าขาย/ธุรกิจส่วนตัว">ค้าขาย/ธุรกิจส่วนตัว</label>
+    </div>
+
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ"
+        name="occupation"
+        value="พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ"
+        checked={formData.personalInfo.occupation.includes('พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ')}
+        onChange={handleCheckboxChangeOccupation}
+        className="mr-2"
+      />
+      <label htmlFor="พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ">พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ</label>
+    </div>
+
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="เกษตรกรรม"
+        name="occupation"
+        value="เกษตรกรรม"
+        checked={formData.personalInfo.occupation.includes('เกษตรกรรม')}
+        onChange={handleCheckboxChangeOccupation}
+        className="mr-2"
+      />
+      <label htmlFor="เกษตรกรรม">เกษตรกรรม</label>
+    </div>
+
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="พนักงานบริษัท/ลูกจ้างเอกชน"
+        name="occupation"
+        value="พนักงานบริษัท/ลูกจ้างเอกชน"
+        checked={formData.personalInfo.occupation.includes('พนักงานบริษัท/ลูกจ้างเอกชน')}
+        onChange={handleCheckboxChangeOccupation}
+        className="mr-2"
+      />
+      <label htmlFor="พนักงานบริษัท/ลูกจ้างเอกชน">พนักงานบริษัท/ลูกจ้างเอกชน</label>
+    </div>
+
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="ว่างงาน"
+        name="occupation"
+        value="ว่างงาน"
+        checked={formData.personalInfo.occupation.includes('ว่างงาน')}
+        onChange={handleCheckboxChangeOccupation}
+        className="mr-2"
+      />
+      <label htmlFor="ว่างงาน">ว่างงาน</label>
+    </div>
+
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="รับจ้างทั่วไป"
+        name="occupation"
+        value="รับจ้างทั่วไป"
+        checked={formData.personalInfo.occupation.includes('รับจ้างทั่วไป')}
+        onChange={handleCheckboxChangeOccupation}
+        className="mr-2"
+      />
+      <label htmlFor="รับจ้างทั่วไป">รับจ้างทั่วไป</label>
+    </div>
+
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="อื่นๆ ระบุ"
+        name="occupation"
+        value="อื่นๆ ระบุ"
+        checked={formData.personalInfo.occupation.includes('อื่นๆ ระบุ')}
+        onChange={handleCheckboxChangeOccupation}
+        className="mr-2"
+      />
+      <label htmlFor="อื่นๆ ระบุ">อื่นๆ ระบุ</label>
+    </div>
+  </div>
+</div>
+
+
+            {/* กลุ่มเลือด */}
+            <div className="flex items-center space-x-4">
+              <label className="block text-sm font-medium">กลุ่มเลือด</label>
+              <input
+                type="text"
+                value={formData.personalInfo.bloodType}
+                onChange={(e) => handleChange(e, 'personalInfo', 'bloodType')}
+                className="p-2 border rounded"
+                placeholder="กลุ่มเลือด"
+              />
+            </div>
+            
+            {/* สิทธิการรักษา */}
+            <div className="flex items-center space-x-4">
+              <label className="block text-sm font-medium">สิทธิการรักษาพยาบาล</label>
+              <input
+                type="checkbox"
+                id="สิทธิสวัสดิการข้าราชการ"
+                name="medicalTreatmentRights"
+                value="สิทธิสวัสดิการข้าราชการ"
+                checked={formData.personalInfo.medicalTreatmentRights.includes('สิทธิสวัสดิการข้าราชการ')}
+                onChange={handleCheckboxChange}
+              />
+              <label htmlFor="สิทธิสวัสดิการข้าราชการ">สิทธิสวัสดิการข้าราชการ</label>
+
+              <input
+                type="checkbox"
+                id="สิทธิประกันสังคม"
+                name="medicalTreatmentRights"
+                value="สิทธิประกันสังคม"
+                checked={formData.personalInfo.medicalTreatmentRights.includes('สิทธิประกันสังคม')}
+                onChange={handleCheckboxChange}
+              />
+              <label htmlFor="สิทธิประกันสังคม">สิทธิประกันสังคม</label>
+
+              <input
+                type="checkbox"
+                id="สิทธิหลักประกันสุขภาพ (บัตรทอง)"
+                name="medicalTreatmentRights"
+                value="สิทธิหลักประกันสุขภาพ (บัตรทอง)"
+                checked={formData.personalInfo.medicalTreatmentRights.includes('สิทธิหลักประกันสุขภาพ (บัตรทอง)')}
+                onChange={handleCheckboxChange}
+              />
+              <label htmlFor="สิทธิหลักประกันสุขภาพ (บัตรทอง)">สิทธิหลักประกันสุขภาพ (บัตรทอง)</label>
+            </div>
+            
+            {/* ประกันสุขภาพ */}
+            <div className="flex items-center space-x-4">
+              <label className="block text-sm font-medium">ประกันสุขภาพ</label>
+              <input
+                type="radio"
+                id="yes"
+                name="hasDisability"
+                value={true}
+                checked={formData.personalInfo.hasDisability}
+                onChange={(e) => handleRadioChange(e, 'personalInfo', 'hasDisability')}
+              />
+              <label htmlFor="yes">มี</label>
+              <input
+                type="radio"
+                id="no"
+                name="hasDisability"
+                value={false}
+                checked={!formData.personalInfo.hasDisability}
+                onChange={(e) => handleRadioChange(e, 'personalInfo', 'hasDisability')}
+              />
+              <label htmlFor="no">ไม่มี</label>
             </div>
           </div>
         </section>
 
+        {/* ข้อมูลการติดต่อ */}
         <section className="space-y-4">
-          <h3 className="text-lg font-semibold">2. ข้อมูลติดต่อ</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 className="text-lg font-semibold">2. ข้อมูลการติดต่อ</h3>
+          <div className="space-y-4">
+
+            {/* เบอร์โทรศัพท์1 */}
             <div>
-              <label className="block text-sm font-medium">เบอร์โทรศัพท์มือถือ</label>
+              <label className="block text-sm font-medium">เบอร์โทรศัพท์มือถือ:</label>
               <input
                 type="text"
-                value={formData.contactInfo.mobile}
-                onChange={(e) => handleChange(e, 'contactInfo', 'mobile')}
-                className="w-full p-2 border rounded"
-                placeholder="เบอร์โทรศัพท์มือถือ"
+                value={formData.contactInfo.mobile1}
+                onChange={(e) => handleChange(e, 'contactInfo', 'mobile1')}
+                className="p-2 border rounded"
+                placeholder="เบอร์โทรศัพท์"
               />
             </div>
+
+            {/* เบอร์โทรศัพท์2 */}
             <div>
-              <label className="block text-sm font-medium">Facebook</label>
+              <label className="block text-sm font-medium">เบอร์โทรศัพท์มือถือ:</label>
+              <input
+                type="text"
+                value={formData.contactInfo.mobile2}
+                onChange={(e) => handleChange(e, 'contactInfo', 'mobile2')}
+                className="p-2 border rounded"
+                placeholder="เบอร์โทรศัพท์สำรอง"
+              />
+            </div>
+
+            {/* Facebook */}
+            <div>
+              <label className="block text-sm font-medium">Faceboo:k</label>
               <input
                 type="text"
                 value={formData.contactInfo.facebook}
                 onChange={(e) => handleChange(e, 'contactInfo', 'facebook')}
-                className="w-full p-2 border rounded"
+                className="p-2 border rounded"
                 placeholder="Facebook"
               />
             </div>
+
+            {/* ID Line */}
             <div>
-              <label className="block text-sm font-medium">ID Line</label>
+              <label className="block text-sm font-medium">ID Line:</label>
               <input
                 type="text"
                 value={formData.contactInfo.idLine}
                 onChange={(e) => handleChange(e, 'contactInfo', 'idLine')}
-                className="w-full p-2 border rounded"
+                className="p-2 border rounded"
                 placeholder="ID Line"
               />
             </div>
+
+            {/* อีเมล์ */}
             <div>
-              <label className="block text-sm font-medium">E-mail</label>
+              <label className="block text-sm font-medium">E-mail:</label>
               <input
                 type="email"
                 value={formData.contactInfo.email}
                 onChange={(e) => handleChange(e, 'contactInfo', 'email')}
-                className="w-full p-2 border rounded"
-                placeholder="E-mail"
+                className="p-2 border rounded"
+                placeholder="อีเมล์"
               />
             </div>
           </div>
         </section>
 
+        {/* ข้อมูลที่อยู่ */}
         <section className="space-y-4">
-          <h3 className="text-lg font-semibold">3. ที่อยู่ปัจจุบัน</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium">บ้านเลขที่</label>
-              <input
-                type="text"
-                name="houseNumber"
-                value={formData.address.current.houseNumber}
-                onChange={(e) => handleAddressChange(e, 'current')}
-                className="w-full p-2 border rounded"
-                placeholder="บ้านเลขที่"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">หมู่บ้าน</label>
-              <input
-                type="text"
-                name="village"
-                value={formData.address.current.village}
-                onChange={(e) => handleAddressChange(e, 'current')}
-                className="w-full p-2 border rounded"
-                placeholder="หมู่บ้าน"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">ซอย</label>
-              <input
-                type="text"
-                name="alley"
-                              value={formData.address.current.alley}
-              onChange={(e) => handleAddressChange(e, 'current')}
-              className="w-full p-2 border rounded"
-              placeholder="ซอย"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">ถนน</label>
-            <input
-              type="text"
-              name="road"
-              value={formData.address.current.road}
-              onChange={(e) => handleAddressChange(e, 'current')}
-              className="w-full p-2 border rounded"
-              placeholder="ถนน"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">ตำบล/แขวง</label>
-            <input
-              type="text"
-              name="subDistrict"
-              value={formData.address.current.subDistrict}
-              onChange={(e) => handleAddressChange(e, 'current')}
-              className="w-full p-2 border rounded"
-              placeholder="ตำบล/แขวง"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">อำเภอ/เขต</label>
-            <input
-              type="text"
-              name="district"
-              value={formData.address.current.district}
-              onChange={(e) => handleAddressChange(e, 'current')}
-              className="w-full p-2 border rounded"
-              placeholder="อำเภอ/เขต"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">จังหวัด</label>
-            <input
-              type="text"
-              name="province"
-              value={formData.address.current.province}
-              onChange={(e) => handleAddressChange(e, 'current')}
-              className="w-full p-2 border rounded"
-              placeholder="จังหวัด"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">รหัสไปรษณีย์</label>
-            <input
-              type="text"
-              name="postalCode"
-              value={formData.address.current.postalCode}
-              onChange={(e) => handleAddressChange(e, 'current')}
-              className="w-full p-2 border rounded"
-              placeholder="รหัสไปรษณีย์"
-            />
-          </div>
-        </div>
-      </section>
+          <h3 className="text-lg font-semibold">3. ข้อมูลที่อยู่</h3>
 
-      <section className="space-y-4">
-        <h3 className="text-lg font-semibold">4. สถานที่ทำงาน</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium">ชื่อสถานที่ทำงาน/บริษัท</label>
-            <input
-              type="text"
-              name="companyName"
-              value={formData.address.work.companyName}
-              onChange={(e) => handleAddressChange(e, 'work')}
-              className="w-full p-2 border rounded"
-              placeholder="ชื่อสถานที่ทำงาน/บริษัท"
-            />
+          {/* ที่อยู่ปัจจุบัน */}
+          <div className="space-y-4">
+            <h4 className="text-md font-semibold">ที่อยู่ปัจจุบัน</h4>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium">บ้านเลขที่</label>
+                <input
+                  type="text"
+                  name="houseNumber"
+                  value={formData.address.current.houseNumber}
+                  onChange={(e) => handleAddressChange(e, 'current')}
+                  className="p-2 border rounded"
+                  placeholder="บ้านเลขที่"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">หมู่บ้าน</label>
+                <input
+                  type="text"
+                  name="village"
+                  value={formData.address.current.village}
+                  onChange={(e) => handleAddressChange(e, 'current')}
+                  className="p-2 border rounded"
+                  placeholder="หมู่บ้าน"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">หมู่</label>
+                <input
+                  type="text"
+                  name="moo"
+                  value={formData.address.current.moo}
+                  onChange={(e) => handleAddressChange(e, 'current')}
+                  className="p-2 border rounded"
+                  placeholder="หมู่"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">ซอย</label>
+                <input
+                  type="text"
+                  name="alley"
+                  value={formData.address.current.alley}
+                  onChange={(e) => handleAddressChange(e, 'current')}
+                  className="p-2 border rounded"
+                  placeholder="ซอย"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">ถนน</label>
+                <input
+                  type="text"
+                  name="road"
+                  value={formData.address.current.road}
+                  onChange={(e) => handleAddressChange(e, 'current')}
+                  className="p-2 border rounded"
+                  placeholder="ถนน"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">ตำบล</label>
+                <input
+                  type="text"
+                  name="subDistrict"
+                  value={formData.address.current.subDistrict}
+                  onChange={(e) => handleAddressChange(e, 'current')}
+                  className="p-2 border rounded"
+                  placeholder="ตำบล"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">อำเภอ</label>
+                <input
+                  type="text"
+                  name="district"
+                  value={formData.address.current.district}
+                  onChange={(e) => handleAddressChange(e, 'current')}
+                  className="p-2 border rounded"
+                  placeholder="อำเภอ"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">จังหวัด</label>
+                <input
+                  type="text"
+                  name="province"
+                  value={formData.address.current.province}
+                  onChange={(e) => handleAddressChange(e, 'current')}
+                  className="p-2 border rounded"
+                  placeholder="จังหวัด"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">รหัสไปรษณีย์</label>
+                <input
+                  type="text"
+                  name="postalCode"
+                  value={formData.address.current.postalCode}
+                  onChange={(e) => handleAddressChange(e, 'current')}
+                  className="p-2 border rounded"
+                  placeholder="รหัสไปรษณีย์"
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium">บ้านเลขที่</label>
-            <input
-              type="text"
-              name="houseNumber"
-              value={formData.address.work.houseNumber}
-              onChange={(e) => handleAddressChange(e, 'work')}
-              className="w-full p-2 border rounded"
-              placeholder="บ้านเลขที่"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">หมู่บ้าน</label>
-            <input
-              type="text"
-              name="village"
-              value={formData.address.work.village}
-              onChange={(e) => handleAddressChange(e, 'work')}
-              className="w-full p-2 border rounded"
-              placeholder="หมู่บ้าน"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">ซอย</label>
-            <input
-              type="text"
-              name="alley"
-              value={formData.address.work.alley}
-              onChange={(e) => handleAddressChange(e, 'work')}
-              className="w-full p-2 border rounded"
-              placeholder="ซอย"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">ถนน</label>
-            <input
-              type="text"
-              name="road"
-              value={formData.address.work.road}
-              onChange={(e) => handleAddressChange(e, 'work')}
-              className="w-full p-2 border rounded"
-              placeholder="ถนน"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">ตำบล/แขวง</label>
-            <input
-              type="text"
-              name="subDistrict"
-              value={formData.address.work.subDistrict}
-              onChange={(e) => handleAddressChange(e, 'work')}
-              className="w-full p-2 border rounded"
-              placeholder="ตำบล/แขวง"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">อำเภอ/เขต</label>
-            <input
-              type="text"
-              name="district"
-              value={formData.address.work.district}
-              onChange={(e) => handleAddressChange(e, 'work')}
-              className="w-full p-2 border rounded"
-              placeholder="อำเภอ/เขต"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">จังหวัด</label>
-            <input
-              type="text"
-              name="province"
-              value={formData.address.work.province}
-              onChange={(e) => handleAddressChange(e, 'work')}
-              className="w-full p-2 border rounded"
-              placeholder="จังหวัด"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">รหัสไปรษณีย์</label>
-            <input
-              type="text"
-              name="postalCode"
-              value={formData.address.work.postalCode}
-              onChange={(e) => handleAddressChange(e, 'work')}
-              className="w-full p-2 border rounded"
-              placeholder="รหัสไปรษณีย์"
-            />
-          </div>
-        </div>
-      </section>
 
-      <div className="flex justify-end space-x-4 mt-6">
-        <Link to="/summaryPage">
-        <button
-          type="submit"
-          className="bg-green-500 text-white p-2 rounded-lg"
-        >
-          บันทึกข้อมูล
-        </button></Link>
-      </div>
-    </form>
-  </div>
+          {/* ที่อยู่ที่ทำงาน */}
+          <div className="space-y-4">
+            <h4 className="text-md font-semibold">4.ที่อยู่ที่ทำงาน</h4>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium">ชื่อสถานที่ทำงาน</label>
+                <input
+                  type="text"
+                  name="companyName"
+                  value={formData.address.company.companyName}
+                  onChange={(e) => handleAddressChange(e, 'company')}
+                  className="p-2 border rounded"
+                  placeholder="ชื่อสถานที่ทำงาน"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">เลขที่</label>
+                <input
+                  type="text"
+                  name="companyNumber"
+                  value={formData.address.company.companyNumber}
+                  onChange={(e) => handleAddressChange(e, 'company')}
+                  className="p-2 border rounded"
+                  placeholder="เลขที่"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">หมู่บ้าน</label>
+                <input
+                  type="text"
+                  name="village"
+                  value={formData.address.company.village}
+                  onChange={(e) => handleAddressChange(e, 'company')}
+                  className="p-2 border rounded"
+                  placeholder="หมู่บ้าน"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">หมู่</label>
+                <input
+                  type="text"
+                  name="moo"
+                  value={formData.address.company.moo}
+                  onChange={(e) => handleAddressChange(e, 'company')}
+                  className="p-2 border rounded"
+                  placeholder="หมู่"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">ซอย</label>
+                <input
+                  type="text"
+                  name="alley"
+                  value={formData.address.company.alley}
+                  onChange={(e) => handleAddressChange(e, 'company')}
+                  className="p-2 border rounded"
+                  placeholder="ซอย"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">ถนน</label>
+                <input
+                  type="text"
+                  name="road"
+                  value={formData.address.company.road}
+                  onChange={(e) => handleAddressChange(e, 'company')}
+                  className="p-2 border rounded"
+                  placeholder="ถนน"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">ตำบล</label>
+                <input
+                  type="text"
+                  name="subDistrict"
+                  value={formData.address.company.subDistrict}
+                  onChange={(e) => handleAddressChange(e, 'company')}
+                  className="p-2 border rounded"
+                  placeholder="ตำบล"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">อำเภอ</label>
+                <input
+                  type="text"
+                  name="district"
+                  value={formData.address.company.district}
+                  onChange={(e) => handleAddressChange(e, 'company')}
+                  className="p-2 border rounded"
+                  placeholder="อำเภอ"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">จังหวัด</label>
+                <input
+                  type="text"
+                  name="province"
+                  value={formData.address.company.province}
+                  onChange={(e) => handleAddressChange(e, 'company')}
+                  className="p-2 border rounded"
+                  placeholder="จังหวัด"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">รหัสไปรษณีย์</label>
+                <input
+                  type="text"
+                  name="postalCode"
+                  value={formData.address.company.postalCode}
+                  onChange={(e) => handleAddressChange(e, 'company')}
+                  className="p-2 border rounded"
+                  placeholder="รหัสไปรษณีย์"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        
+        <div className="flex justify-center space-x-4">
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="bg-green-500 text-white p-2 rounded"
+          >
+            บันทึกข้อมูล
+          </button>
+        </div>
+      </form>
+    </div>
   );
-}
+};
 
 export default EditPage;
-
