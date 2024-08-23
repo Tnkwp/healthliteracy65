@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 
 const PersonalInfoSummary = () => {
   return (
-    <div className="bg-gray-100 min-h-screen flex justify-center items-center">
-      <div className="bg-white shadow-lg rounded-lg w-full max-w-xl p-6">
+    <div className="bg-gray-100 min-h-screen flex justify-center items-center p-4">
+      <div className="bg-white shadow-lg rounded-lg w-full max-w-3xl p-8">
 
         {/* Header */}
-        <header className="border-b-2 pb-2 mb-4">
-          <h1 className="text-lg font-semibold text-center">สรุปข้อมูลส่วนตัว</h1>
+        <header className="bg-green-500 border-b-2 p-2 mb-6 rounded-md">
+          <h1 className="text-xl font-semibol text-white text-start ">ประวัติส่วนตัว</h1>
         </header>
 
         {/* ข้อมูลส่วนบุคคล */}
-        <section className="mb-6">
-          <h2 className="font-bold mb-2 text-sm">1. ข้อมูลส่วนบุคคล</h2>
-          <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+        <section className="mb-8">
+          <h2 className="font-bold mb-4 text-base">1. ข้อมูลส่วนบุคคล</h2>
+          <div className="grid grid-cols-2 gap-y-3 gap-x-6">
             <p className="col-span-2">ชื่อ - นามสกุล: <span className="font-medium">นายอนุวัตร์ สวัสดิ์วงค์</span></p>
             <p className="col-span-2">หมายเลขบัตรประจำตัวประชาชน: <span className="font-medium">1234567890234</span></p>
             <p>เพศ: <span className="font-medium">ชาย</span></p>
@@ -31,9 +31,9 @@ const PersonalInfoSummary = () => {
         </section>
 
         {/* ข้อมูลการติดต่อ */}
-        <section className="mb-6">
-          <h2 className="font-bold mb-2 text-sm">2. ข้อมูลการติดต่อ</h2>
-          <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+        <section className="mb-8">
+          <h2 className="font-bold mb-4 text-base">2. ข้อมูลการติดต่อ</h2>
+          <div className="grid grid-cols-2 gap-y-3 gap-x-6">
             <p>เบอร์โทรศัพท์: <span className="font-medium">099-9999999</span></p>
             <p>Facebook: <span className="font-medium">Anuwat Sawatdiwong</span></p>
             <p>ID Line: <span className="font-medium">Anuwat Sawatdiwong</span></p>
@@ -42,9 +42,9 @@ const PersonalInfoSummary = () => {
         </section>
 
         {/* ที่อยู่ปัจจุบัน */}
-        <section className="mb-6">
-          <h2 className="font-bold mb-2 text-sm">3. ที่อยู่ปัจจุบัน</h2>
-          <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+        <section className="mb-8">
+          <h2 className="font-bold mb-4 text-base">3. ที่อยู่ปัจจุบัน</h2>
+          <div className="grid grid-cols-2 gap-y-3 gap-x-6">
             <p>บ้านเลขที่: <span className="font-medium">165/3</span></p>
             <p>หมู่บ้าน: <span className="font-medium">แสนสุข</span></p>
             <p>หมู่: <span className="font-medium">1</span></p>
@@ -58,9 +58,9 @@ const PersonalInfoSummary = () => {
         </section>
 
         {/* ข้อมูลที่ทำงาน */}
-        <section className="mb-6">
-          <h2 className="font-bold mb-2 text-sm">4. ข้อมูลที่ทำงาน</h2>
-          <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+        <section className="mb-8">
+          <h2 className="font-bold mb-4 text-base">4. ข้อมูลที่ทำงาน</h2>
+          <div className="grid grid-cols-2 gap-y-3 gap-x-6">
             <p className="col-span-2">ชื่อสถานที่ทำงาน/บริษัท: <span className="font-medium">บริษัทตัวอย่าง จำกัด</span></p>
             <p className="col-span-2">เลขที่ทำงาน: <span className="font-medium">123/4 </span></p>
             <p>หมู่บ้าน: <span className="font-medium">แสนสุข</span></p>
@@ -77,10 +77,10 @@ const PersonalInfoSummary = () => {
         {/* Buttons */}
         <div className="flex justify-between">
           <Link to="/edit">
-            <button className="bg-red-500 text-white px-6 py-2 rounded-lg">แก้ไข</button>
+            <button className="bg-red-500 text-white px-8 py-3 rounded-lg">แก้ไข</button>
           </Link>
           <Link to="/quiz">
-            <button className="bg-green-500 text-white px-6 py-2 rounded-lg">เริ่มทำแบบประเมิน</button>
+            <button className="bg-green-500 text-white px-8 py-3 rounded-lg">เริ่มทำแบบประเมิน</button>
           </Link>
         </div>
       </div>

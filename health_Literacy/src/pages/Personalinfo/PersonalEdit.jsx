@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+
 function EditPage() {
   const navigate = useNavigate();
+  const [showOtherOccupationInput, setShowOtherOccupationInput] = useState(false);
+  const [otherOccupation, setOtherOccupation] = useState('');
+
   const [formData, setFormData] = useState({
     personalInfo: {
       nameTitle: 'นาย',
@@ -100,28 +104,62 @@ function EditPage() {
   }));
 };
 
-  const handleCheckboxChangeOccupation = (e) => {
-  const { value, checked } = e.target;
-  setFormData((prevState) => ({
-    ...prevState,
-    personalInfo: {
-      ...prevState.personalInfo,
-      occupation: checked
-        ? [...prevState.personalInfo.occupation, value]
-        : prevState.personalInfo.occupation.filter((item) => item !== value),
-    },
-  }));
-};
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Updated Data:', formData);
-    navigate('/summaryPage');
+  const handleCheckboxChangeOccupation = (event) => {
+    const { value, checked } = event.target;
+
+    if (value === 'อื่นๆ ระบุ') {
+      setShowOtherOccupationInput(checked);
+      if (!checked) {
+        setOtherOccupation('');
+      }
+    }
+
+    setFormData((prevState) => ({
+      ...prevState,
+      personalInfo: {
+        ...prevState.personalInfo,
+        occupation: checked
+          ? [...prevState.personalInfo.occupation, value]
+          : prevState.personalInfo.occupation.filter((item) => item !== value),
+      },
+    }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    let updatedOccupations = formData.personalInfo.occupation;
+
+    if (updatedOccupations.includes('อื่นๆ ระบุ') && otherOccupation) {
+      updatedOccupations = updatedOccupations.map((occupation) =>
+        occupation === 'อื่นๆ ระบุ' ? otherOccupation : occupation
+      );
+    }
+
+    setFormData((prevState) => ({
+      ...prevState,
+      personalInfo: {
+        ...prevState.personalInfo,
+        occupation: updatedOccupations,
+      },
+    }));
+
+    // Your form submission logic here
+    console.log('Form Data Submitted:', {
+      ...formData,
+      personalInfo: {
+        ...formData.personalInfo,
+        occupation: updatedOccupations,
+      },
+    });
   };
 
   return (
     <div className="p-4 bg-white shadow-md rounded-lg">
       <form onSubmit={handleSubmit} className="space-y-8">
-        <h2 className="text-2xl font-bold text-center">แก้ไขข้อมูลส่วนตัว</h2>
+        <header className="bg-green-500 border-b-2 p-2 mb-6 rounded-md">
+          <h1 className="text-xl font-semibol text-white text-start ">แก้ไขประวัติส่วนตัว</h1>
+        </header>
 
         {/* ข้อมูลส่วนบุคคล */}
         <section className="space-y-4">
@@ -392,6 +430,17 @@ function EditPage() {
       />
       <label htmlFor="อื่นๆ ระบุ">อื่นๆ ระบุ</label>
     </div>
+    {showOtherOccupationInput && (
+        <div className="mt-2">
+          <input
+            type="text"
+            value={otherOccupation}
+            onChange={(e) => setOtherOccupation(e.target.value)}
+            placeholder="ระบุอาชีพอื่นๆ"
+            className="border border-gray-300 p-2 rounded"
+          />
+        </div>
+      )}
   </div>
 </div>
 
@@ -763,7 +812,7 @@ function EditPage() {
         </section>
 
         
-        <div className="flex justify-center space-x-4">
+         <div className="flex justify-center space-x-4">
           <button
             type="button"
             onClick={handleSubmit}
