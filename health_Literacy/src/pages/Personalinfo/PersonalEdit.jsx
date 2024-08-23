@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function EditPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     personalInfo: {
       nameTitle: 'นาย',
@@ -13,8 +15,8 @@ function EditPage() {
       maritalStatus: 'สมรส',
       occupation: ['รับจ้างทั่วไป'],
       bloodType: 'O',
-      weight: 68,
-      height: 171,
+      weight: '68',
+      height: '171',
       medicalTreatmentRights: ['สิทธิประกันสังคม'],
       insurance: 'ไม่มี',
     },
@@ -113,6 +115,7 @@ function EditPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Updated Data:', formData);
+    navigate('/summaryPage');
   };
 
   return (
@@ -444,22 +447,22 @@ function EditPage() {
               <label className="block text-sm font-medium">ประกันสุขภาพ</label>
               <input
                 type="radio"
-                id="yes"
-                name="hasDisability"
-                value={true}
-                checked={formData.personalInfo.hasDisability}
-                onChange={(e) => handleRadioChange(e, 'personalInfo', 'hasDisability')}
+                id="มี"
+                name="insurance"
+                value="มี"
+                checked={formData.personalInfo.insurance === 'มี'}
+                onChange={(e) => handleRadioChange(e, 'personalInfo', 'insurance')}
               />
-              <label htmlFor="yes">มี</label>
+              <label htmlFor="มี">มี</label>
               <input
                 type="radio"
-                id="no"
-                name="hasDisability"
-                value={false}
-                checked={!formData.personalInfo.hasDisability}
-                onChange={(e) => handleRadioChange(e, 'personalInfo', 'hasDisability')}
+                id="ไม่มี"
+                name="insurance"
+                value="ไม่มี"
+                checked={formData.personalInfo.insurance === 'ไม่มี'}
+                onChange={(e) => handleRadioChange(e, 'personalInfo', 'insurance')}
               />
-              <label htmlFor="no">ไม่มี</label>
+              <label htmlFor="ไม่มี">ไม่มี</label>
             </div>
           </div>
         </section>
