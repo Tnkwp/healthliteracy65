@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-function EditPage() {
+function PersonalInfoForm() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     personalInfo: {
       nameTitle: '',
-      Name: '',
+      fullName: '',
       idCard: '',
       dob: '',
       age: '',
@@ -163,8 +162,8 @@ function EditPage() {
                 <label htmlFor="นางสาว">นางสาว</label>
                 <input
                   type="text"
-                  value={formData.personalInfo.Name}
-                  onChange={(e) => handleChange(e, 'personalInfo', 'Name')}
+                  value={formData.personalInfo.fullName}
+                  onChange={(e) => handleChange(e, 'personalInfo', 'fullName')}
                   className="p-2 border rounded"
                   placeholder="ชื่อ-นามสกุล"
                 />
@@ -780,4 +779,4 @@ function EditPage() {
   );
 };
 
-export default EditPage;
+export default PersonalInfoForm;
