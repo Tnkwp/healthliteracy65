@@ -466,7 +466,8 @@ function PersonalInfoForm() {
             {/* สิทธิการรักษา */}
             <div className="flex items-center space-x-4">
               <label className="block text-sm font-medium">สิทธิการรักษาพยาบาล</label>
-              <input
+              <div>
+                <input
                 type="checkbox"
                 id="สิทธิสวัสดิการข้าราชการ"
                 name="medicalTreatmentRights"
@@ -495,6 +496,7 @@ function PersonalInfoForm() {
                 onChange={handleCheckboxChange}
               />
               <label htmlFor="สิทธิหลักประกันสุขภาพ (บัตรทอง)">สิทธิหลักประกันสุขภาพ (บัตรทอง)</label>
+              </div>
             </div>
             
             {/* ประกันสุขภาพ */}
