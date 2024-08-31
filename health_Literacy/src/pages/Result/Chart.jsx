@@ -90,7 +90,7 @@ const MyChart = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full h-full bg-white p-4 shadow-lg rounded-lg flex flex-col">
-        {/* Header */}
+        {/* Headerghjkl[ukjhgf] */}
         <div className="flex justify-between items-center mb-4">
           <button className="text-lg">&lt;</button>
           <div className="text-center flex-grow text-gray-700">
