@@ -157,8 +157,9 @@ function EditPage() {
   };
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
-      <form onSubmit={handleSubmit} className="space-y-8">
+    <div className="bg-gray-100 min-h-screen flex justify-center items-center p-4">
+      <div className='bg-white shadow-lg rounded-lg w-full max-w-3xl p-8'>
+        <form onSubmit={handleSubmit} className="space-y-8">
         <header className="bg-green-500 border-b-2 p-2 mb-6 rounded-md">
           <h1 className="text-xl font-semibol text-white text-start ">แก้ไขประวัติส่วนตัว</h1>
         </header>
@@ -827,6 +828,7 @@ function EditPage() {
           </button>
         </div>
       </form>
+      </div>
     </div>
   );
 };
