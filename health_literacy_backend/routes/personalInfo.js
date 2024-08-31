@@ -31,14 +31,28 @@ router.get('/:id', (req, res) => {
 // POST new personal info
 router.post('/', (req, res) => {
   const {
-    nameTitle, fullName, idCard, dob, age, gender, maritalStatus,
-    occupation, bloodType, weight, height, medicalTreatmentRights, insurance
+    nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, 
+    weight, height, medicalTreatmentRights, insurance, mobile1, mobile2, facebook, 
+    idLine, email, houseNumber, hVillage, hAlley, hMoo, hRoad, hSubDistrict, hDistrict, 
+    hProvince, hPostalCode, companyName, companyNumber, cVillage, cMoo, cAlley, cRoad, 
+    cSubDistrict, cDistrict, cProvince, cPostalCode
   } = req.body;
 
-  const query = `INSERT INTO personalInfo (nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, weight, height, medicalTreatmentRights, insurance)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const query = `INSERT INTO personalInfo (
+    nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, 
+    weight, height, medicalTreatmentRights, insurance, mobile1, mobile2, facebook, 
+    idLine, email, houseNumber, hVillage, hAlley, hMoo, hRoad, hSubDistrict, hDistrict, 
+    hProvince, hPostalCode, companyName, companyNumber, cVillage, cMoo, cAlley, cRoad, 
+    cSubDistrict, cDistrict, cProvince, cPostalCode
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-  db.query(query, [nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, weight, height, medicalTreatmentRights, insurance], (err, results) => {
+  db.query(query, [
+    nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, 
+    weight, height, medicalTreatmentRights, insurance, mobile1, mobile2, facebook, 
+    idLine, email, houseNumber, hVillage, hAlley, hMoo, hRoad, hSubDistrict, hDistrict, 
+    hProvince, hPostalCode, companyName, companyNumber, cVillage, cMoo, cAlley, cRoad, 
+    cSubDistrict, cDistrict, cProvince, cPostalCode
+  ], (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -60,14 +74,28 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   const id = req.params.id;
   const {
-    nameTitle, fullName, idCard, dob, age, gender, maritalStatus,
-    occupation, bloodType, weight, height, medicalTreatmentRights, insurance
+    nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, 
+    weight, height, medicalTreatmentRights, insurance, mobile1, mobile2, facebook, 
+    idLine, email, houseNumber, hVillage, hAlley, hMoo, hRoad, hSubDistrict, hDistrict, 
+    hProvince, hPostalCode, companyName, companyNumber, cVillage, cMoo, cAlley, cRoad, 
+    cSubDistrict, cDistrict, cProvince, cPostalCode
   } = req.body;
 
-  const query = `UPDATE personalInfo SET nameTitle = ?, fullName = ?, idCard = ?, dob = ?, age = ?, gender = ?, maritalStatus = ?, occupation = ?, bloodType = ?, weight = ?, height = ?, medicalTreatmentRights = ?, insurance = ?
-                 WHERE id = ?`;
+  const query = `UPDATE personalInfo SET 
+    nameTitle = ?, fullName = ?, idCard = ?, dob = ?, age = ?, gender = ?, maritalStatus = ?, occupation = ?, bloodType = ?, 
+    weight = ?, height = ?, medicalTreatmentRights = ?, insurance = ?, mobile1 = ?, mobile2 = ?, facebook = ?, 
+    idLine = ?, email = ?, houseNumber = ?, hVillage = ?, hAlley = ?, hMoo = ?, hRoad = ?, hSubDistrict = ?, 
+    hDistrict = ?, hProvince = ?, hPostalCode = ?, companyName = ?, companyNumber = ?, cVillage = ?, cMoo = ?, 
+    cAlley = ?, cRoad = ?, cSubDistrict = ?, cDistrict = ?, cProvince = ?, cPostalCode = ? 
+    WHERE id = ?`;
 
-  db.query(query, [nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, weight, height, medicalTreatmentRights, insurance, id], (err) => {
+  db.query(query, [
+    nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, 
+    weight, height, medicalTreatmentRights, insurance, mobile1, mobile2, facebook, 
+    idLine, email, houseNumber, hVillage, hAlley, hMoo, hRoad, hSubDistrict, hDistrict, 
+    hProvince, hPostalCode, companyName, companyNumber, cVillage, cMoo, cAlley, cRoad, 
+    cSubDistrict, cDistrict, cProvince, cPostalCode, id
+  ], (err) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -82,31 +110,6 @@ router.put('/:id', (req, res) => {
       }
       
       // Send the updated record back
-      res.status(200).json(results[0]);
-    });
-  });
-});
-
-// DELETE personal info
-router.delete('/:id', (req, res) => {
-  const id = req.params.id;
-  
-  // First retrieve the record to be deleted
-  db.query('SELECT * FROM personalInfo WHERE id = ?', [id], (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    if (results.length === 0) {
-      return res.status(404).json({ error: 'Not found' });
-    }
-    
-    // Proceed to delete the record
-    db.query('DELETE FROM personalInfo WHERE id = ?', [id], (err) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      
-      // Send the deleted record back
       res.status(200).json(results[0]);
     });
   });
@@ -171,31 +174,6 @@ router.put('/occupationDetails/:id', (req, res) => {
       }
       
       // Send the updated record back
-      res.status(200).json(results[0]);
-    });
-  });
-});
-
-// DELETE occupation details
-router.delete('/occupationDetails/:id', (req, res) => {
-  const id = req.params.id;
-  
-  // First retrieve the record to be deleted
-  db.query('SELECT * FROM occupationDetails WHERE id = ?', [id], (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    if (results.length === 0) {
-      return res.status(404).json({ error: 'Not found' });
-    }
-    
-    // Proceed to delete the record
-    db.query('DELETE FROM occupationDetails WHERE id = ?', [id], (err) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      
-      // Send the deleted record back
       res.status(200).json(results[0]);
     });
   });

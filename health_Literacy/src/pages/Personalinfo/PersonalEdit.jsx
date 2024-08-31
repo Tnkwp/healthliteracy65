@@ -11,7 +11,7 @@ function EditPage() {
   const [formData, setFormData] = useState({
     personalInfo: {
       nameTitle: 'นาย',
-      Name: 'อนุวัฒน์ สวัสดิ์วงศ์',
+      fullName: 'อนุวัฒน์ สวัสดิ์วงศ์',
       idCard: '1234567890123',
       dob: '2512-07-29',
       age: '55',
@@ -34,26 +34,26 @@ function EditPage() {
     address: {
       current: {
         houseNumber: '165/3',
-        village: 'บ้านกลาง',
-        alley: '1',
-        moo: '',
-        road: '',
-        subDistrict: 'เชียงแสน',
-        district: 'เชียงแสน',
-        province: 'พะเยา',
-        postalCode: '56160',
+        hVillage: 'บ้านกลาง',
+        hAlley: '1',
+        hMoo: '',
+        hRoad: '',
+        hSubDistrict: 'เชียงแสน',
+        hDistrict: 'เชียงแสน',
+        hProvince: 'พะเยา',
+        hPostalCode: '56160',
       },
       company: {
         companyName: 'สำนักงานขายกลางเชียงใหม่',
         companyNumber: '1/21',
-        village: 'บ้านกลาง',
-        moo: '',
-        alley: '1',
-        road: '',
-        subDistrict: 'เชียงแสน',
-        district: 'เชียงแสน',
-        province: 'พะเยา',
-        postalCode: '56160',
+        cVillage: 'บ้านกลาง',
+        cMoo: '',
+        cAlley: '1',
+        cRoad: '',
+        cSubDistrict: 'เชียงแสน',
+        cDistrict: 'เชียงแสน',
+        cProvince: 'พะเยา',
+        cPostalCode: '56160',
       },
     },
   });
@@ -107,7 +107,7 @@ function EditPage() {
   const handleCheckboxChangeOccupation = (event) => {
     const { value, checked } = event.target;
 
-    if (value === 'อื่นๆ ระบุ') {
+    if (value === 'อื่นๆ') {
       setShowOtherOccupationInput(checked);
       if (!checked) {
         setOtherOccupation('');
@@ -130,9 +130,9 @@ function EditPage() {
 
     let updatedOccupations = formData.personalInfo.occupation;
 
-    if (updatedOccupations.includes('อื่นๆ ระบุ') && otherOccupation) {
+    if (updatedOccupations.includes('อื่นๆ') && otherOccupation) {
       updatedOccupations = updatedOccupations.map((occupation) =>
-        occupation === 'อื่นๆ ระบุ' ? otherOccupation : occupation
+        occupation === 'อื่นๆ' ? otherOccupation : occupation
       );
     }
 
@@ -152,6 +152,8 @@ function EditPage() {
         occupation: updatedOccupations,
       },
     });
+
+    navigate('/summaryPage');
   };
 
   return (
@@ -199,7 +201,7 @@ function EditPage() {
                 <label htmlFor="นางสาว">นางสาว</label>
                 <input
                   type="text"
-                  value={formData.personalInfo.Name}
+                  value={formData.personalInfo.fullName}
                   onChange={(e) => handleChange(e, 'personalInfo', 'Name')}
                   className="p-2 border rounded"
                   placeholder="ชื่อ-นามสกุล"
@@ -241,6 +243,8 @@ function EditPage() {
               />
               <label htmlFor="female">หญิง</label>
             </div>
+
+            {/* วัน/เดือน/ปีเกิด */}
             <div>
               <label className="block text-sm font-medium">วัน/เดือน/ปีเกิด</label>
               <input
@@ -421,17 +425,18 @@ function EditPage() {
     <div className="flex items-center">
       <input
         type="checkbox"
-        id="อื่นๆ ระบุ"
+        id="อื่นๆ"
         name="occupation"
-        value="อื่นๆ ระบุ"
-        checked={formData.personalInfo.occupation.includes('อื่นๆ ระบุ')}
+        value="อื่นๆ"
+        checked={formData.personalInfo.occupation.includes('อื่นๆ')}
         onChange={handleCheckboxChangeOccupation}
         className="mr-2"
       />
-      <label htmlFor="อื่นๆ ระบุ">อื่นๆ ระบุ</label>
+      <label htmlFor="อื่นๆ">อื่นๆ</label>
     </div>
     {showOtherOccupationInput && (
         <div className="mt-2">
+          <label htmlFor="otherOccupation" className="text-sm font-medium mr-2">ระบุ</label>
           <input
             type="text"
             value={otherOccupation}
@@ -607,7 +612,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="village"
-                  value={formData.address.current.village}
+                  value={formData.address.current.hVillage}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
                   placeholder="หมู่บ้าน"
@@ -618,7 +623,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="moo"
-                  value={formData.address.current.moo}
+                  value={formData.address.current.hMoo}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
                   placeholder="หมู่"
@@ -629,7 +634,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="alley"
-                  value={formData.address.current.alley}
+                  value={formData.address.current.hAlley}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
                   placeholder="ซอย"
@@ -640,7 +645,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="road"
-                  value={formData.address.current.road}
+                  value={formData.address.current.hRoad}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
                   placeholder="ถนน"
@@ -651,7 +656,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="subDistrict"
-                  value={formData.address.current.subDistrict}
+                  value={formData.address.current.hSubDistrict}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
                   placeholder="ตำบล"
@@ -662,7 +667,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="district"
-                  value={formData.address.current.district}
+                  value={formData.address.current.hDistrict}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
                   placeholder="อำเภอ"
@@ -673,7 +678,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="province"
-                  value={formData.address.current.province}
+                  value={formData.address.current.hProvince}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
                   placeholder="จังหวัด"
@@ -684,7 +689,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="postalCode"
-                  value={formData.address.current.postalCode}
+                  value={formData.address.current.hPostalCode}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
                   placeholder="รหัสไปรษณีย์"
@@ -724,7 +729,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="village"
-                  value={formData.address.company.village}
+                  value={formData.address.company.cVillage}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
                   placeholder="หมู่บ้าน"
@@ -735,7 +740,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="moo"
-                  value={formData.address.company.moo}
+                  value={formData.address.company.cMoo}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
                   placeholder="หมู่"
@@ -746,7 +751,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="alley"
-                  value={formData.address.company.alley}
+                  value={formData.address.company.cAlley}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
                   placeholder="ซอย"
@@ -757,7 +762,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="road"
-                  value={formData.address.company.road}
+                  value={formData.address.company.cRoad}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
                   placeholder="ถนน"
@@ -768,7 +773,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="subDistrict"
-                  value={formData.address.company.subDistrict}
+                  value={formData.address.company.cSubDistrict}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
                   placeholder="ตำบล"
@@ -779,7 +784,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="district"
-                  value={formData.address.company.district}
+                  value={formData.address.company.cDistrict}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
                   placeholder="อำเภอ"
@@ -790,7 +795,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="province"
-                  value={formData.address.company.province}
+                  value={formData.address.company.cProvince}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
                   placeholder="จังหวัด"
@@ -801,7 +806,7 @@ function EditPage() {
                 <input
                   type="text"
                   name="postalCode"
-                  value={formData.address.company.postalCode}
+                  value={formData.address.company.cPostalCode}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
                   placeholder="รหัสไปรษณีย์"
