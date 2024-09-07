@@ -105,7 +105,7 @@ const PersonalInfoSummary = () => {
         {/* Buttons */}
         <div className="flex justify-between">
           <Link to="/edit">
-            <button className="bg-red-500 text-white px-8 py-3 rounded-lg ">แก้ไข</button>
+            <button className="bg-red-500 text-white px-8 py-3 rounded-lg">แก้ไข</button>
           </Link>
           <Link to="/quiz">
             <button className="bg-green-500 text-white px-8 py-3 rounded-lg">เริ่มทำแบบประเมิน</button>
