@@ -144,7 +144,7 @@ function PersonalInfoForm() {
       },
     }));
 
-    // Your form submission logic here////
+    // Your form submission logic here
     console.log('Form Data Submitted:', {
       ...formData,
       personalInfo: {
