@@ -17,7 +17,7 @@ function EditPage() {
       age: '55',
       gender: 'ชาย',
       maritalStatus: 'สมรส',
-      occupation: ['รับจ้างทั่วไป'],
+      occupation: ['พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ'],
       bloodType: 'O',
       weight: '68',
       height: '171',
@@ -612,7 +612,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">หมู่บ้าน</label>
                 <input
                   type="text"
-                  name="village"
+                  name="hVillage"
                   value={formData.address.current.hVillage}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
@@ -623,7 +623,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">หมู่</label>
                 <input
                   type="text"
-                  name="moo"
+                  name="hMoo"
                   value={formData.address.current.hMoo}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
@@ -634,7 +634,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">ซอย</label>
                 <input
                   type="text"
-                  name="alley"
+                  name="hAlley"
                   value={formData.address.current.hAlley}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
@@ -645,7 +645,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">ถนน</label>
                 <input
                   type="text"
-                  name="road"
+                  name="hRoad"
                   value={formData.address.current.hRoad}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
@@ -656,7 +656,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">ตำบล</label>
                 <input
                   type="text"
-                  name="subDistrict"
+                  name="hSubDistrict"
                   value={formData.address.current.hSubDistrict}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
@@ -667,7 +667,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">อำเภอ</label>
                 <input
                   type="text"
-                  name="district"
+                  name="hDistrict"
                   value={formData.address.current.hDistrict}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
@@ -678,7 +678,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">จังหวัด</label>
                 <input
                   type="text"
-                  name="province"
+                  name="hProvince"
                   value={formData.address.current.hProvince}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
@@ -689,7 +689,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">รหัสไปรษณีย์</label>
                 <input
                   type="text"
-                  name="postalCode"
+                  name="hPostalCode"
                   value={formData.address.current.hPostalCode}
                   onChange={(e) => handleAddressChange(e, 'current')}
                   className="p-2 border rounded"
@@ -729,7 +729,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">หมู่บ้าน</label>
                 <input
                   type="text"
-                  name="village"
+                  name="cVillage"
                   value={formData.address.company.cVillage}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
@@ -740,7 +740,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">หมู่</label>
                 <input
                   type="text"
-                  name="moo"
+                  name="cMoo"
                   value={formData.address.company.cMoo}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
@@ -751,7 +751,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">ซอย</label>
                 <input
                   type="text"
-                  name="alley"
+                  name="cAlley"
                   value={formData.address.company.cAlley}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
@@ -762,7 +762,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">ถนน</label>
                 <input
                   type="text"
-                  name="road"
+                  name="cRoad"
                   value={formData.address.company.cRoad}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
@@ -773,7 +773,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">ตำบล</label>
                 <input
                   type="text"
-                  name="subDistrict"
+                  name="cSubDistrict"
                   value={formData.address.company.cSubDistrict}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
@@ -784,7 +784,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">อำเภอ</label>
                 <input
                   type="text"
-                  name="district"
+                  name="cDistrict"
                   value={formData.address.company.cDistrict}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
@@ -795,7 +795,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">จังหวัด</label>
                 <input
                   type="text"
-                  name="province"
+                  name="cProvince"
                   value={formData.address.company.cProvince}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
@@ -806,7 +806,7 @@ function EditPage() {
                 <label className="block text-sm font-medium">รหัสไปรษณีย์</label>
                 <input
                   type="text"
-                  name="postalCode"
+                  name="cPostalCode"
                   value={formData.address.company.cPostalCode}
                   onChange={(e) => handleAddressChange(e, 'company')}
                   className="p-2 border rounded"
