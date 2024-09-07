@@ -16,7 +16,7 @@ const PersonalInfoSummary = () => {
           <h2 className="font-bold mb-4 text-base">1. ข้อมูลส่วนบุคคล</h2>
           <div className="grid gap-y-3">
            <div className='flex'>
-           <div className="flex ml-5">ชื่อ - นามสกุล : <span className="font-medium ml-4">นายอนุวัตร สวัสดิ์วงศ์</span></div> 
+           <div className="flex ml-5">ชื่อ - นามสกุล : <span className="font-medium ml-4 border-b border-dotted w-full text-cennter border-black">นายอนุวัตร สวัสดิ์วงศ์</span></div> 
            <div className="flex ml-10">เลขที่บัตรประจำตัวประชาชน : <span className="font-medium ml-4">1234567890123</span></div>
           </div>
            <div className='flex'>
