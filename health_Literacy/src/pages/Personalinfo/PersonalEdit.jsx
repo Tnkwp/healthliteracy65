@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
-function EditPage() {
+function PersonalInfoForm() {
   const navigate = useNavigate();
   const [showOtherOccupationInput, setShowOtherOccupationInput] = useState(false);
   const [otherOccupation, setOtherOccupation] = useState('');
-  const { pid } = useParams();
 
   const [formData, setFormData] = useState({
     personalInfo: {
@@ -57,21 +56,6 @@ function EditPage() {
       },
     },
   });
-
-  
-    useEffect(() => {
-    const fetchPersonalInfo = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/personalInfo/${pid}`);
-        const data = await response.json();
-        setFormData(data);
-      } catch (error) {
-        console.error('Error fetching personalInfo:', error);
-      }
-    };
-
-    fetchPersonalInfo();
-  }, [pid]);
 
   const handleChange = (e, section, field) => {
   const { value } = e.target;
@@ -155,8 +139,8 @@ function EditPage() {
       ...formData.address.current,
       ...formData.address.company
   };
-    fetch(`http://localhost:3000/personalInfo/${pid}`, {
-      method: 'PUT',
+    fetch('http://localhost:3000/personalInfo', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -833,4 +817,4 @@ function EditPage() {
   );
 };
 
-export default EditPage;
+export default PersonalInfoForm;
