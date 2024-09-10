@@ -1,836 +1,227 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
+const formatDateToThai = (dateString) => {
+  if (!dateString) return '-';
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.getMonth() + 1; 
+  const year = date.getFullYear() + 543; 
 
-function EditPage() {
-  const navigate = useNavigate();
-  const [showOtherOccupationInput, setShowOtherOccupationInput] = useState(false);
-  const [otherOccupation, setOtherOccupation] = useState('');
-
-  const [formData, setFormData] = useState({
-    personalInfo: {
-      nameTitle: 'นาย',
-      fullName: 'อนุวัฒน์ สวัสดิ์วงศ์',
-      idCard: '1234567890123',
-      dob: '2512-07-29',
-      age: '55',
-      gender: 'ชาย',
-      maritalStatus: 'สมรส',
-      occupation: ['พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ'],
-      bloodType: 'O',
-      weight: '68',
-      height: '171',
-      medicalTreatmentRights: ['สิทธิประกันสังคม'],
-      insurance: 'ไม่มี',
-    },
-    contactInfo: {
-      mobile1: '089-9966999',
-      mobile2: '',
-      facebook: 'Anuwat Sawatdiwong',
-      idLine: '089-9966999',
-      email: 'anuwatsawatdiwong99@gmail.com',
-    },
-    address: {
-      current: {
-        houseNumber: '165/3',
-        hVillage: 'บ้านกลาง',
-        hAlley: '1',
-        hMoo: '',
-        hRoad: '',
-        hSubDistrict: 'เชียงแสน',
-        hDistrict: 'เชียงแสน',
-        hProvince: 'พะเยา',
-        hPostalCode: '56160',
-      },
-      company: {
-        companyName: 'สำนักงานขายกลางเชียงใหม่',
-        companyNumber: '1/21',
-        cVillage: 'บ้านกลาง',
-        cMoo: '',
-        cAlley: '1',
-        cRoad: '',
-        cSubDistrict: 'เชียงแสน',
-        cDistrict: 'เชียงแสน',
-        cProvince: 'พะเยา',
-        cPostalCode: '56160',
-      },
-    },
-  });
-
-  const handleChange = (e, section, field) => {
-    setFormData({
-      ...formData,
-      [section]: {
-        ...formData[section],
-        [field]: e.target.value,
-      },
-    });
-  };
-
-  const handleAddressChange = (e, type) => {
-    setFormData({
-      ...formData,
-      address: {
-        ...formData.address,
-        [type]: {
-          ...formData.address[type],
-          [e.target.name]: e.target.value,
-        },
-      },
-    });
-  };
-
-  const handleRadioChange = (e, section, field) => {
-    setFormData({
-      ...formData,
-      [section]: {
-        ...formData[section],
-        [field]: e.target.value,
-      },
-    });
-  };
-
-  const handleCheckboxChange = (e) => {
-  const { value, checked } = e.target;
-  setFormData((prevState) => ({
-    ...prevState,
-    personalInfo: {
-      ...prevState.personalInfo,
-      medicalTreatmentRights: checked
-        ? [...prevState.personalInfo.medicalTreatmentRights, value]
-        : prevState.personalInfo.medicalTreatmentRights.filter((item) => item !== value),
-    },
-  }));
+  return `${day}/${month}/${year}`;
 };
 
-  const handleCheckboxChangeOccupation = (event) => {
-    const { value, checked } = event.target;
-
-    if (value === 'อื่นๆ') {
-      setShowOtherOccupationInput(checked);
-      if (!checked) {
-        setOtherOccupation('');
+const PersonalInfoSummary = () => {
+  const { pid } = useParams(); 
+  const [personalInfo, setPersonalInfo] = useState(null);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const fetchPersonalInfo = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/personalInfo/${pid}`);
+        const data = await response.json();
+        setPersonalInfo(data);
+      } catch (error) {
+        console.error('Error fetching personalInfo:', error);
       }
-    }
+    };
 
-    setFormData((prevState) => ({
-      ...prevState,
-      personalInfo: {
-        ...prevState.personalInfo,
-        occupation: checked
-          ? [...prevState.personalInfo.occupation, value]
-          : prevState.personalInfo.occupation.filter((item) => item !== value),
-      },
-    }));
+    fetchPersonalInfo();
+  }, [pid]);
+
+  const handleEdit = () => {
+    navigate(`/personalInfo/edit/${pid}`);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    let updatedOccupations = formData.personalInfo.occupation;
-
-    if (updatedOccupations.includes('อื่นๆ') && otherOccupation) {
-      updatedOccupations = updatedOccupations.map((occupation) =>
-        occupation === 'อื่นๆ' ? otherOccupation : occupation
-      );
-    }
-
-    setFormData((prevState) => ({
-      ...prevState,
-      personalInfo: {
-        ...prevState.personalInfo,
-        occupation: updatedOccupations,
-      },
-    }));
-
-    // Your form submission logic here
-    console.log('Form Data Submitted:', {
-      ...formData,
-      personalInfo: {
-        ...formData.personalInfo,
-        occupation: updatedOccupations,
-      },
-    });
-
-    navigate('/summaryPage');
-  };
+  if (!personalInfo) return <div>Loading...</div>;
 
   return (
     <div className="bg-gray-100 min-h-screen flex justify-center items-center p-4">
-      <div className='bg-white shadow-lg rounded-lg w-full max-w-3xl p-8'>
-        <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="bg-white shadow-lg rounded-lg w-full max-w-3xl p-8">
+        {/* Header */}
         <header className="bg-green-500 border-b-2 p-2 mb-6 rounded-md">
-          <h1 className="text-xl font-semibol text-white text-start ">แก้ไขประวัติส่วนตัว</h1>
+          <h1 className="text-xl font-semibold text-white text-start">ประวัติส่วนตัว</h1>
         </header>
 
         {/* ข้อมูลส่วนบุคคล */}
-        <section className="space-y-4">
-          <h3 className="text-lg font-semibold">1. ข้อมูลส่วนบุคคล</h3>
-          <div className="space-y-4">
-
-            {/* ชื่อ-นามสกุล */}
-            <div className='flex items-center '>
-              <label className="block text-sm font-medium mr-2">ชื่อ - นามสกุล</label>
-              <div className="flex items-center space-x-4">
-                <input
-                  type="radio"
-                  id="นาย"
-                  name="nameTitle"
-                  value="นาย"
-                  checked={formData.personalInfo.nameTitle === 'นาย'}
-                  onChange={(e) => handleRadioChange(e, 'personalInfo', 'nameTitle')}
-                />
-                <label htmlFor="นาย">นาย</label>
-                <input
-                  type="radio"
-                  id="นาง"
-                  name="nameTitle"
-                  value="นาง"
-                  checked={formData.personalInfo.nameTitle === 'นาง'}
-                  onChange={(e) => handleRadioChange(e, 'personalInfo', 'nameTitle')}
-                />
-                <label htmlFor="นาง">นาง</label>
-                <input
-                  type="radio"
-                  id="นางสาว"
-                  name="nameTitle"
-                  value="นางสาว"
-                  checked={formData.personalInfo.nameTitle === 'นางสาว'}
-                  onChange={(e) => handleRadioChange(e, 'personalInfo', 'nameTitle')}
-                />
-                <label htmlFor="นางสาว">นางสาว</label>
-                <input
-                  type="text"
-                  value={formData.personalInfo.fullName}
-                  onChange={(e) => handleChange(e, 'personalInfo', 'Name')}
-                  className="p-2 border rounded"
-                  placeholder="ชื่อ-นามสกุล"
-                />
-              </div>
+        <section className="mb-8 ">
+          <h2 className="font-bold mb-4 text-base">1. ข้อมูลส่วนบุคคล</h2>
+          <div className="grid gap-y-3">
+<<<<<<< HEAD
+            <div className='flex'>
+              <div className="flex ml-5">ชื่อ - นามสกุล : <span className="font-medium ml-4">{personalInfo.nameTitle}{personalInfo.fullName}</span></div> 
+              <div className="flex ml-10">เลขที่บัตรประจำตัวประชาชน : <span className="font-medium ml-4">{personalInfo.idCard}</span></div>
             </div>
-
-            {/* เลขบัตรประจำตัวประชาชน */}
-            <div>
-              <label className="block text-sm font-medium">เลขที่บัตรประชาชน</label>
-              <input
-                type="text"
-                value={formData.personalInfo.idCard}
-                onChange={(e) => handleChange(e, 'personalInfo', 'idCard')}
-                className="p-2 border rounded"
-                placeholder="เลขที่บัตรประชาชน"
-              />
+            <div className='flex'>
+              <div className="flex ml-5">เพศ : <span className="font-medium ml-4">{personalInfo.gender}</span></div> 
+              <div className="flex ml-20">วัน/เดือน/ปี เกิด : <span className="font-medium ml-4">{formatDateToThai(personalInfo.dob)}</span></div>
+              <div className="flex ml-20">อายุ : <span className="font-medium ml-4">{personalInfo.age} ปี</span></div>
             </div>
-
-            {/* เพศ */}
-            <div className="flex items-center space-x-4">
-              <label className="block text-sm font-medium">เพศ</label>
-              <input
-                type="radio"
-                id="male"
-                name="gender"
-                value="ชาย"
-                checked={formData.personalInfo.gender === 'ชาย'}
-                onChange={(e) => handleRadioChange(e, 'personalInfo', 'gender')}
-              />
-              <label htmlFor="male">ชาย</label>
-              <input
-                type="radio"
-                id="female"
-                name="gender"
-                value="หญิง"
-                checked={formData.personalInfo.gender === 'หญิง'}
-                onChange={(e) => handleRadioChange(e, 'personalInfo', 'gender')}
-              />
-              <label htmlFor="female">หญิง</label>
+            <div className='flex'>
+              <div className="flex ml-5">สถานภาพ : <span className="font-medium ml-4">{personalInfo.maritalStatus}</span></div> 
+              <div className="flex ml-20">อาชีพ : <span className="font-medium ml-4">{personalInfo.occupation}</span></div>
             </div>
-
-            {/* วัน/เดือน/ปีเกิด */}
-            <div>
-              <label className="block text-sm font-medium">วัน/เดือน/ปีเกิด</label>
-              <input
-                type="date"
-                value={formData.personalInfo.dob}
-                onChange={(e) => handleChange(e, 'personalInfo', 'dob')}
-                className="p-2 border rounded"
-              />
+            <div className='flex'>
+              <div className="flex ml-5">หมู่โลหิต : <span className="font-medium ml-4">{personalInfo.bloodType}</span></div> 
+              <div className="flex ml-20">น้ำหนัก : <span className="font-medium ml-4">{personalInfo.weight}</span></div>
+              <div className="flex ml-20">ส่วนสูง : <span className="font-medium ml-4">{personalInfo.height}</span></div>
             </div>
-
-            {/* อายุ */}
-            <div className="flex items-center space-x-4">
-              <label className="block text-sm font-medium">อายุ</label>
-              <input
-                type="text"
-                value={formData.personalInfo.age}
-                onChange={(e) => handleChange(e, 'personalInfo', 'age')}
-                className="p-2 border rounded"
-                placeholder="อายุ"
-              />
-              <span>ปี</span>
+            <div className='flex'>
+              <div className="flex ml-5">สิทธิการรักษาพยาบาล : <span className="font-medium ml-4">{personalInfo.medicalTreatmentRights}</span></div> 
+              <div className="flex ml-20">ประกันสุขภาพ : <span className="font-medium ml-4">{personalInfo.insurance}</span></div>
             </div>
-
-            {/* น้ำหนัก */}
-            <div className="flex items-center space-x-4">
-              <label className="block text-sm font-medium">น้ำหนัก</label>
-              <input
-                type="text"
-                value={formData.personalInfo.weight}
-                onChange={(e) => handleChange(e, 'personalInfo', 'weight')}
-                className="p-2 border rounded"
-                placeholder="น้ำหนัก"
-              />
-              <span>กิโลกรัม</span>
-            </div>
-
-            {/* ส่วนสูง */}
-            <div className="flex items-center space-x-4">
-              <label className="block text-sm font-medium">ส่วนสูง</label>
-              <input
-                type="text"
-                value={formData.personalInfo.height}
-                onChange={(e) => handleChange(e, 'personalInfo', 'height')}
-                className="p-2 border rounded"
-                placeholder="ส่วนสูง"
-              />
-              <span>เซนติเมตร</span>
-            </div>
-
-            {/* สถานะภาพ */}
-            <div className="flex items-center space-x-4">
-              <label className="block text-sm font-medium">สถานะภาพ</label>
-              <input
-                type="radio"
-                id="single"
-                name="maritalStatus"
-                value="โสด"
-                checked={formData.personalInfo.maritalStatus === 'โสด'}
-                onChange={(e) => handleRadioChange(e, 'personalInfo', 'maritalStatus')}
-              />
-              <label htmlFor="single">โสด</label>
-              <input
-                type="radio"
-                id="married"
-                name="maritalStatus"
-                value="สมรส"
-                checked={formData.personalInfo.maritalStatus === 'สมรส'}
-                onChange={(e) => handleRadioChange(e, 'personalInfo', 'maritalStatus')}
-              />
-              <label htmlFor="married">สมรส</label>
-              <input
-                type="radio"
-                id="divorced"
-                name="maritalStatus"
-                value="หย่าร้าง/หม้าย/แยกกันอยู่"
-                checked={formData.personalInfo.maritalStatus === 'หย่าร้าง/หม้าย/แยกกันอยู่'}
-                onChange={(e) => handleRadioChange(e, 'personalInfo', 'maritalStatus')}
-              />
-              <label htmlFor="divorced">หย่าร้าง/หม้าย/แยกกันอยู่</label>
-            </div>
-
-            {/* อาชีพ */}
-            <div className="space-y-4">
-  <label className="text-sm font-medium mb-2">อาชีพ</label>
-  
-  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id="รับราชการ/รัฐวิสาหกิจ"
-        name="occupation"
-        value="รับราชการ/รัฐวิสาหกิจ"
-        checked={formData.personalInfo.occupation.includes('รับราชการ/รัฐวิสาหกิจ')}
-        onChange={handleCheckboxChangeOccupation}
-        className="mr-2"
-      />
-      <label htmlFor="รับราชการ/รัฐวิสาหกิจ">รับราชการ/รัฐวิสาหกิจ</label>
-    </div>
-
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id="ค้าขาย/ธุรกิจส่วนตัว"
-        name="occupation"
-        value="ค้าขาย/ธุรกิจส่วนตัว"
-        checked={formData.personalInfo.occupation.includes('ค้าขาย/ธุรกิจส่วนตัว')}
-        onChange={handleCheckboxChangeOccupation}
-        className="mr-2"
-      />
-      <label htmlFor="ค้าขาย/ธุรกิจส่วนตัว">ค้าขาย/ธุรกิจส่วนตัว</label>
-    </div>
-
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id="พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ"
-        name="occupation"
-        value="พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ"
-        checked={formData.personalInfo.occupation.includes('พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ')}
-        onChange={handleCheckboxChangeOccupation}
-        className="mr-2"
-      />
-      <label htmlFor="พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ">พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ</label>
-    </div>
-
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id="เกษตรกรรม"
-        name="occupation"
-        value="เกษตรกรรม"
-        checked={formData.personalInfo.occupation.includes('เกษตรกรรม')}
-        onChange={handleCheckboxChangeOccupation}
-        className="mr-2"
-      />
-      <label htmlFor="เกษตรกรรม">เกษตรกรรม</label>
-    </div>
-
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id="พนักงานบริษัท/ลูกจ้างเอกชน"
-        name="occupation"
-        value="พนักงานบริษัท/ลูกจ้างเอกชน"
-        checked={formData.personalInfo.occupation.includes('พนักงานบริษัท/ลูกจ้างเอกชน')}
-        onChange={handleCheckboxChangeOccupation}
-        className="mr-2"
-      />
-      <label htmlFor="พนักงานบริษัท/ลูกจ้างเอกชน">พนักงานบริษัท/ลูกจ้างเอกชน</label>
-    </div>
-
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id="ว่างงาน"
-        name="occupation"
-        value="ว่างงาน"
-        checked={formData.personalInfo.occupation.includes('ว่างงาน')}
-        onChange={handleCheckboxChangeOccupation}
-        className="mr-2"
-      />
-      <label htmlFor="ว่างงาน">ว่างงาน</label>
-    </div>
-
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id="รับจ้างทั่วไป"
-        name="occupation"
-        value="รับจ้างทั่วไป"
-        checked={formData.personalInfo.occupation.includes('รับจ้างทั่วไป')}
-        onChange={handleCheckboxChangeOccupation}
-        className="mr-2"
-      />
-      <label htmlFor="รับจ้างทั่วไป">รับจ้างทั่วไป</label>
-    </div>
-
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id="อื่นๆ"
-        name="occupation"
-        value="อื่นๆ"
-        checked={formData.personalInfo.occupation.includes('อื่นๆ')}
-        onChange={handleCheckboxChangeOccupation}
-        className="mr-2"
-      />
-      <label htmlFor="อื่นๆ">อื่นๆ</label>
-    </div>
-    {showOtherOccupationInput && (
-        <div className="mt-2">
-          <label htmlFor="otherOccupation" className="text-sm font-medium mr-2">ระบุ</label>
-          <input
-            type="text"
-            value={otherOccupation}
-            onChange={(e) => setOtherOccupation(e.target.value)}
-            placeholder="ระบุอาชีพอื่นๆ"
-            className="border border-gray-300 p-2 rounded"
-          />
-        </div>
-      )}
-  </div>
-</div>
-
-
-            {/* กลุ่มเลือด */}
-            <div className="flex items-center space-x-4">
-              <label className="block text-sm font-medium">กลุ่มเลือด</label>
-              <input
-                type="text"
-                value={formData.personalInfo.bloodType}
-                onChange={(e) => handleChange(e, 'personalInfo', 'bloodType')}
-                className="p-2 border rounded"
-                placeholder="กลุ่มเลือด"
-              />
-            </div>
-            
-            {/* สิทธิการรักษา */}
-            <div className="flex items-center space-x-4">
-              <label className="block text-sm font-medium">สิทธิการรักษาพยาบาล</label>
-              <input
-                type="checkbox"
-                id="สิทธิสวัสดิการข้าราชการ"
-                name="medicalTreatmentRights"
-                value="สิทธิสวัสดิการข้าราชการ"
-                checked={formData.personalInfo.medicalTreatmentRights.includes('สิทธิสวัสดิการข้าราชการ')}
-                onChange={handleCheckboxChange}
-              />
-              <label htmlFor="สิทธิสวัสดิการข้าราชการ">สิทธิสวัสดิการข้าราชการ</label>
-
-              <input
-                type="checkbox"
-                id="สิทธิประกันสังคม"
-                name="medicalTreatmentRights"
-                value="สิทธิประกันสังคม"
-                checked={formData.personalInfo.medicalTreatmentRights.includes('สิทธิประกันสังคม')}
-                onChange={handleCheckboxChange}
-              />
-              <label htmlFor="สิทธิประกันสังคม">สิทธิประกันสังคม</label>
-
-              <input
-                type="checkbox"
-                id="สิทธิหลักประกันสุขภาพ (บัตรทอง)"
-                name="medicalTreatmentRights"
-                value="สิทธิหลักประกันสุขภาพ (บัตรทอง)"
-                checked={formData.personalInfo.medicalTreatmentRights.includes('สิทธิหลักประกันสุขภาพ (บัตรทอง)')}
-                onChange={handleCheckboxChange}
-              />
-              <label htmlFor="สิทธิหลักประกันสุขภาพ (บัตรทอง)">สิทธิหลักประกันสุขภาพ (บัตรทอง)</label>
-            </div>
-            
-            {/* ประกันสุขภาพ */}
-            <div className="flex items-center space-x-4">
-              <label className="block text-sm font-medium">ประกันสุขภาพ</label>
-              <input
-                type="radio"
-                id="มี"
-                name="insurance"
-                value="มี"
-                checked={formData.personalInfo.insurance === 'มี'}
-                onChange={(e) => handleRadioChange(e, 'personalInfo', 'insurance')}
-              />
-              <label htmlFor="มี">มี</label>
-              <input
-                type="radio"
-                id="ไม่มี"
-                name="insurance"
-                value="ไม่มี"
-                checked={formData.personalInfo.insurance === 'ไม่มี'}
-                onChange={(e) => handleRadioChange(e, 'personalInfo', 'insurance')}
-              />
-              <label htmlFor="ไม่มี">ไม่มี</label>
-            </div>
+=======
+           <div className='flex'>
+           <div className="flex ml-5">ชื่อ - นามสกุล : <span className="font-medium ml-4 border-b border-dotted w-full text-cennter border-black">นายอนุวัตร สวัสดิ์วงศ์</span></div> 
+           <div className="flex ml-10">เลขที่บัตรประจำตัวประชาชน : <span className="font-medium ml-4">1234567890123</span></div>
+          </div>
+           <div className='flex'>
+           <div className="flex ml-5">เพศ : <span className="font-medium ml-4">ชาย</span></div> 
+           <div className="flex ml-20">วัน/เดือน/ปี เกิด : <span className="font-medium ml-4">29/07/2512</span></div>
+           <div className="flex ml-20">อายุ : <span className="font-medium ml-4">55 ปี</span></div>
+          </div>
+          <div className='flex'>
+           <div className="flex ml-5">สถานภาพ : <span className="font-medium ml-4">สมรส/อยู่ด้วยกัน</span></div> 
+           <div className="flex ml-20">อาชีพ : <span className="font-medium ml-4">พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ</span></div>
+          </div>
+          <div className='flex'>
+           <div className="flex ml-5">หมู่โลหิต : <span className="font-medium ml-4">O</span></div> 
+           <div className="flex ml-20">น้ำหนัก : <span className="font-medium ml-4">70 กิโลกรัม</span></div>
+           <div className="flex ml-20">ส่วนสูง : <span className="font-medium ml-4">175 เซนติเมตร</span></div>
+          </div>
+          <div className='flex'>
+           <div className="flex ml-5">สิทธิการรักษาพยาบาล : <span className="font-medium ml-4">สิทธประกันสังคม</span></div> 
+           <div className="flex ml-20">ประกันสุขภาพ : <span className="font-medium ml-4">มี</span></div>
+          </div> 
+>>>>>>> 6cc943755036205ca890cc6b892dd470ec7f8d91
           </div>
         </section>
 
         {/* ข้อมูลการติดต่อ */}
-        <section className="space-y-4">
-          <h3 className="text-lg font-semibold">2. ข้อมูลการติดต่อ</h3>
-          <div className="space-y-4">
-
-            {/* เบอร์โทรศัพท์1 */}
-            <div>
-              <label className="block text-sm font-medium">เบอร์โทรศัพท์มือถือ:</label>
-              <input
-                type="text"
-                value={formData.contactInfo.mobile1}
-                onChange={(e) => handleChange(e, 'contactInfo', 'mobile1')}
-                className="p-2 border rounded"
-                placeholder="เบอร์โทรศัพท์"
-              />
+        <section className="mb-8">
+          <h2 className="font-bold mb-4 text-base">2. ข้อมูลการติดต่อ</h2>
+          <div className="grid gap-y-3">
+<<<<<<< HEAD
+            <div className='flex'>
+              <div className="flex ml-5">เบอร์โทรศัพท์ : <span className="font-medium ml-4">{personalInfo.mobile1}</span></div> 
+              <div className="flex ml-20">Facebook : <span className="font-medium ml-4">{personalInfo.facebook}</span></div>
             </div>
-
-            {/* เบอร์โทรศัพท์2 */}
-            <div>
-              <label className="block text-sm font-medium">เบอร์โทรศัพท์มือถือ:</label>
-              <input
-                type="text"
-                value={formData.contactInfo.mobile2}
-                onChange={(e) => handleChange(e, 'contactInfo', 'mobile2')}
-                className="p-2 border rounded"
-                placeholder="เบอร์โทรศัพท์สำรอง"
-              />
+            <div className='flex'>
+              <div className="flex ml-5">ID Line : <span className="font-medium ml-4">{personalInfo.idLine}</span></div> 
+              <div className="flex ml-20">E-mail : <span className="font-medium ml-4">{personalInfo.email}</span></div>
             </div>
-
-            {/* Facebook */}
-            <div>
-              <label className="block text-sm font-medium">Faceboo:k</label>
-              <input
-                type="text"
-                value={formData.contactInfo.facebook}
-                onChange={(e) => handleChange(e, 'contactInfo', 'facebook')}
-                className="p-2 border rounded"
-                placeholder="Facebook"
-              />
-            </div>
-
-            {/* ID Line */}
-            <div>
-              <label className="block text-sm font-medium">ID Line:</label>
-              <input
-                type="text"
-                value={formData.contactInfo.idLine}
-                onChange={(e) => handleChange(e, 'contactInfo', 'idLine')}
-                className="p-2 border rounded"
-                placeholder="ID Line"
-              />
-            </div>
-
-            {/* อีเมล์ */}
-            <div>
-              <label className="block text-sm font-medium">E-mail:</label>
-              <input
-                type="email"
-                value={formData.contactInfo.email}
-                onChange={(e) => handleChange(e, 'contactInfo', 'email')}
-                className="p-2 border rounded"
-                placeholder="อีเมล์"
-              />
-            </div>
+=======
+           <div className='flex'>
+           <div className="flex ml-5">เบอร์โทรศัพท์ : <span className="font-medium ml-4">089-9966999</span></div> 
+           <div className="flex ml-20">Facebook : <span className="font-medium ml-4">Anuwat Sawatdiwong</span></div>
+          </div>
+          <div className='flex'>
+           <div className="flex ml-5">ID Line : <span className="font-medium ml-4">089-9966999</span></div> 
+           <div className="flex ml-20">E-mail : <span className="font-medium ml-4">anuwatsawatdiwong99@gmail.com</span></div>
+          </div>
+>>>>>>> 6cc943755036205ca890cc6b892dd470ec7f8d91
           </div>
         </section>
 
-        {/* ข้อมูลที่อยู่ */}
-        <section className="space-y-4">
-          <h3 className="text-lg font-semibold">3. ข้อมูลที่อยู่</h3>
-
-          {/* ที่อยู่ปัจจุบัน */}
-          <div className="space-y-4">
-            <h4 className="text-md font-semibold">ที่อยู่ปัจจุบัน</h4>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium">บ้านเลขที่</label>
-                <input
-                  type="text"
-                  name="houseNumber"
-                  value={formData.address.current.houseNumber}
-                  onChange={(e) => handleAddressChange(e, 'current')}
-                  className="p-2 border rounded"
-                  placeholder="บ้านเลขที่"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">หมู่บ้าน</label>
-                <input
-                  type="text"
-                  name="hVillage"
-                  value={formData.address.current.hVillage}
-                  onChange={(e) => handleAddressChange(e, 'current')}
-                  className="p-2 border rounded"
-                  placeholder="หมู่บ้าน"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">หมู่</label>
-                <input
-                  type="text"
-                  name="hMoo"
-                  value={formData.address.current.hMoo}
-                  onChange={(e) => handleAddressChange(e, 'current')}
-                  className="p-2 border rounded"
-                  placeholder="หมู่"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">ซอย</label>
-                <input
-                  type="text"
-                  name="hAlley"
-                  value={formData.address.current.hAlley}
-                  onChange={(e) => handleAddressChange(e, 'current')}
-                  className="p-2 border rounded"
-                  placeholder="ซอย"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">ถนน</label>
-                <input
-                  type="text"
-                  name="hRoad"
-                  value={formData.address.current.hRoad}
-                  onChange={(e) => handleAddressChange(e, 'current')}
-                  className="p-2 border rounded"
-                  placeholder="ถนน"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">ตำบล</label>
-                <input
-                  type="text"
-                  name="hSubDistrict"
-                  value={formData.address.current.hSubDistrict}
-                  onChange={(e) => handleAddressChange(e, 'current')}
-                  className="p-2 border rounded"
-                  placeholder="ตำบล"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">อำเภอ</label>
-                <input
-                  type="text"
-                  name="hDistrict"
-                  value={formData.address.current.hDistrict}
-                  onChange={(e) => handleAddressChange(e, 'current')}
-                  className="p-2 border rounded"
-                  placeholder="อำเภอ"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">จังหวัด</label>
-                <input
-                  type="text"
-                  name="hProvince"
-                  value={formData.address.current.hProvince}
-                  onChange={(e) => handleAddressChange(e, 'current')}
-                  className="p-2 border rounded"
-                  placeholder="จังหวัด"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">รหัสไปรษณีย์</label>
-                <input
-                  type="text"
-                  name="hPostalCode"
-                  value={formData.address.current.hPostalCode}
-                  onChange={(e) => handleAddressChange(e, 'current')}
-                  className="p-2 border rounded"
-                  placeholder="รหัสไปรษณีย์"
-                />
-              </div>
+        {/* ที่อยู่ปัจจุบัน */}
+        <section className="mb-8">
+          <h2 className="font-bold mb-4 text-base">3. ที่อยู่ปัจจุบัน</h2>
+          <div className="grid gap-y-3">
+<<<<<<< HEAD
+            <div className='flex'>
+              <div className="flex ml-5">บ้านเลขที่ : <span className="font-medium ml-4">{personalInfo.houseNumber}</span></div> 
+              <div className="flex ml-20">หมู่บ้าน : <span className="font-medium ml-4">{personalInfo.hVillage}</span></div>
+              <div className="flex ml-20">หมู่ : <span className="font-medium ml-4">{personalInfo.hMoo}</span></div> 
+              <div className="flex ml-10">ซอย : <span className="font-medium ml-4">{personalInfo.hAlley}</span></div>
             </div>
+            <div className='flex'>
+              <div className="flex ml-5">ถนน : <span className="font-medium ml-4">{personalInfo.hRoad}</span></div> 
+              <div className="flex ml-20">ตำบล/แขวง : <span className="font-medium ml-4">{personalInfo.hSubDistrict}</span></div>
+              <div className="flex ml-20">อำเภอ/เขต : <span className="font-medium ml-4">{personalInfo.hDistrict}</span></div>
+            </div>
+            <div className='flex'>
+              <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">{personalInfo.hProvince}</span></div> 
+              <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">{personalInfo.hPostalCode}</span></div>
+            </div>
+=======
+          <div className='flex'>
+           <div className="flex ml-5">บ้านเลขที่ : <span className="font-medium ml-4">165/3</span></div> 
+           <div className="flex ml-20">หมู่บ้าน : <span className="font-medium ml-4">บ้านหลวง</span></div>
+           <div className="flex ml-20">หมู่ : <span className="font-medium ml-4">1</span></div> 
+           <div className="flex ml-10">ซอย : <span className="font-medium ml-4">-</span></div>
           </div>
-
-          {/* ที่อยู่ที่ทำงาน */}
-          <div className="space-y-4">
-            <h4 className="text-md font-semibold">4.ที่อยู่ที่ทำงาน</h4>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium">ชื่อสถานที่ทำงาน</label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={formData.address.company.companyName}
-                  onChange={(e) => handleAddressChange(e, 'company')}
-                  className="p-2 border rounded"
-                  placeholder="ชื่อสถานที่ทำงาน"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">เลขที่</label>
-                <input
-                  type="text"
-                  name="companyNumber"
-                  value={formData.address.company.companyNumber}
-                  onChange={(e) => handleAddressChange(e, 'company')}
-                  className="p-2 border rounded"
-                  placeholder="เลขที่"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">หมู่บ้าน</label>
-                <input
-                  type="text"
-                  name="cVillage"
-                  value={formData.address.company.cVillage}
-                  onChange={(e) => handleAddressChange(e, 'company')}
-                  className="p-2 border rounded"
-                  placeholder="หมู่บ้าน"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">หมู่</label>
-                <input
-                  type="text"
-                  name="cMoo"
-                  value={formData.address.company.cMoo}
-                  onChange={(e) => handleAddressChange(e, 'company')}
-                  className="p-2 border rounded"
-                  placeholder="หมู่"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">ซอย</label>
-                <input
-                  type="text"
-                  name="cAlley"
-                  value={formData.address.company.cAlley}
-                  onChange={(e) => handleAddressChange(e, 'company')}
-                  className="p-2 border rounded"
-                  placeholder="ซอย"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">ถนน</label>
-                <input
-                  type="text"
-                  name="cRoad"
-                  value={formData.address.company.cRoad}
-                  onChange={(e) => handleAddressChange(e, 'company')}
-                  className="p-2 border rounded"
-                  placeholder="ถนน"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">ตำบล</label>
-                <input
-                  type="text"
-                  name="cSubDistrict"
-                  value={formData.address.company.cSubDistrict}
-                  onChange={(e) => handleAddressChange(e, 'company')}
-                  className="p-2 border rounded"
-                  placeholder="ตำบล"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">อำเภอ</label>
-                <input
-                  type="text"
-                  name="cDistrict"
-                  value={formData.address.company.cDistrict}
-                  onChange={(e) => handleAddressChange(e, 'company')}
-                  className="p-2 border rounded"
-                  placeholder="อำเภอ"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">จังหวัด</label>
-                <input
-                  type="text"
-                  name="cProvince"
-                  value={formData.address.company.cProvince}
-                  onChange={(e) => handleAddressChange(e, 'company')}
-                  className="p-2 border rounded"
-                  placeholder="จังหวัด"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium">รหัสไปรษณีย์</label>
-                <input
-                  type="text"
-                  name="cPostalCode"
-                  value={formData.address.company.cPostalCode}
-                  onChange={(e) => handleAddressChange(e, 'company')}
-                  className="p-2 border rounded"
-                  placeholder="รหัสไปรษณีย์"
-                />
-              </div>
-            </div>
+          <div className='flex'>
+           <div className="flex ml-5">ถนน : <span className="font-medium ml-4">-</span></div> 
+           <div className="flex ml-20">ตำบล/แขวง : <span className="font-medium ml-4">เชียงม่วน</span></div>
+           <div className="flex ml-20">อำเภอ/เขต : <span className="font-medium ml-4">เชียงม่วน</span></div>
+          </div>
+          <div className='flex'>
+           <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">พะเยา</span></div> 
+           <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">56160</span></div>
+          </div>
+>>>>>>> 6cc943755036205ca890cc6b892dd470ec7f8d91
           </div>
         </section>
 
-        
-         <div className="flex justify-center space-x-4">
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="bg-green-500 text-white p-2 rounded"
-          >
-            บันทึกข้อมูล
-          </button>
+        {/* ข้อมูลที่ทำงาน */}
+        <section className="mb-8">
+          <h2 className="font-bold mb-4 text-base">4. ข้อมูลที่ทำงาน</h2>
+          <div className="grid gap-y-3">
+<<<<<<< HEAD
+            <div className='flex'>
+              <div className="flex ml-5">ชื่อสถานที่ทำงาน/บริษัท : <span className="font-medium ml-4">{personalInfo.companyName}</span></div> 
+            </div>
+            <div className='flex'>
+              <div className="flex ml-5">เลขที่ : <span className="font-medium ml-4">{personalInfo.companyNumber}</span></div> 
+              <div className="flex ml-20">หมู่บ้าน : <span className="font-medium ml-4">{personalInfo.cVillage}</span></div>
+              <div className="flex ml-20">หมู่ : <span className="font-medium ml-4">{personalInfo.cMoo}</span></div> 
+              <div className="flex ml-10">ซอย : <span className="font-medium ml-4">{personalInfo.cAlley}</span></div>
+            </div>
+            <div className='flex'>
+              <div className="flex ml-5">ถนน : <span className="font-medium ml-4">{personalInfo.cRoad}</span></div> 
+              <div className="flex ml-20">ตำบล/แขวง : <span className="font-medium ml-4">{personalInfo.cSubDistrict}</span></div>
+              <div className="flex ml-20">อำเภอ/เขต : <span className="font-medium ml-4">{personalInfo.cDistrict}</span></div>
+            </div>
+            <div className='flex'>
+              <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">{personalInfo.cProvince}</span></div> 
+              <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">{personalInfo.cPostalCode}</span></div>
+            </div>
+=======
+          <div className='flex'>
+           <div className="flex ml-5">ชื่อสถานที่ทำงาน/บริษัท : <span className="font-medium ml-4">สำนักงานเทศบาลตำบลเชียงม่วน</span></div> 
+          </div>
+          <div className='flex'>
+           <div className="flex ml-5">เลขที่ : <span className="font-medium ml-4">165/3</span></div> 
+           <div className="flex ml-20">หมู่บ้าน : <span className="font-medium ml-4">บ้านมาง</span></div>
+           <div className="flex ml-20">หมู่ : <span className="font-medium ml-4">1</span></div> 
+           <div className="flex ml-10">ซอย : <span className="font-medium ml-4">-</span></div>
+          </div>
+          <div className='flex'>
+           <div className="flex ml-5">ถนน : <span className="font-medium ml-4">-</span></div> 
+           <div className="flex ml-20">ตำบล/แขวง : <span className="font-medium ml-4">บ้านมาง</span></div>
+           <div className="flex ml-20">อำเภอ/เขต : <span className="font-medium ml-4">เชียงม่วน</span></div>
+          </div>
+          <div className='flex'>
+           <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">พะเยา</span></div> 
+           <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">56160</span></div>
+          </div>
+>>>>>>> 6cc943755036205ca890cc6b892dd470ec7f8d91
+          </div>
+        </section>
+
+        {/* Buttons */}
+        <div className="flex justify-between">
+         
+            <button onClick={handleEdit} className="bg-red-500 text-white px-8 py-3 rounded-lg">แก้ไข</button>
+          
+          <Link to="/quiz">
+            <button className="bg-green-500 text-white px-8 py-3 rounded-lg">เริ่มทำแบบประเมิน</button>
+          </Link>
         </div>
-      </form>
       </div>
     </div>
   );
 };
 
-export default EditPage;
+export default PersonalInfoSummary;
