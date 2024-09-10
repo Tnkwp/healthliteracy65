@@ -15,28 +15,42 @@ router.get('/', (req, res) => {
 });
 
 // GET personal info by ID
-router.get('/:id', (req, res) => {
-  const id = req.params.id;
-  db.query('SELECT * FROM personalInfo WHERE id = ?', [id], (err, results) => {
+router.get('/:pid', (req, res) => {
+  const id = req.params.pid;
+
+  db.query('SELECT * FROM personalInfo WHERE pid = ?', [id], (err, results) => {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      console.error('Error fetching personalInfo:', err.message); // Log error for debugging
+      return res.status(500).json({ error: 'An error occurred while retrieving the record.' });
     }
     if (results.length === 0) {
-      return res.status(404).json({ error: 'Not found' });
+      return res.status(404).json({ error: 'Record not found.' });
     }
-    res.json(results[0]);
+    res.status(200).json(results[0]); // Send the record back with a 200 status
   });
 });
 
+
 // POST new personal info
 router.post('/', (req, res) => {
+  // แสดงข้อมูลที่รับเข้ามา
+  console.log('Request Body:', req.body);
+
   const {
-    nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, 
-    weight, height, medicalTreatmentRights, insurance, mobile1, mobile2, facebook, 
-    idLine, email, houseNumber, hVillage, hAlley, hMoo, hRoad, hSubDistrict, hDistrict, 
-    hProvince, hPostalCode, companyName, companyNumber, cVillage, cMoo, cAlley, cRoad, 
-    cSubDistrict, cDistrict, cProvince, cPostalCode
+    nameTitle, fullName, idCard, dob, age, gender, maritalStatus, bloodType, 
+    weight, height, insurance, mobile1, mobile2, facebook, idLine, email, 
+    houseNumber, hVillage, hAlley, hMoo, hRoad, hSubDistrict, hDistrict, 
+    hProvince, hPostalCode, companyName, companyNumber, cVillage, cMoo, cAlley, 
+    cRoad, cSubDistrict, cDistrict, cProvince, cPostalCode
   } = req.body;
+
+  // จัดการกับค่า array ก่อนนำไปใช้ใน SQL
+  const medicalTreatmentRights = Array.isArray(req.body.medicalTreatmentRights)
+    ? req.body.medicalTreatmentRights.join(',')
+    : '';
+  const occupation = Array.isArray(req.body.occupation)
+    ? req.body.occupation.join(',')
+    : '';
 
   const query = `INSERT INTO personalInfo (
     nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, 
@@ -59,7 +73,7 @@ router.post('/', (req, res) => {
     
     // Retrieve the newly inserted record
     const newId = results.insertId;
-    db.query('SELECT * FROM personalInfo WHERE id = ?', [newId], (err, results) => {
+    db.query('SELECT * FROM personalInfo WHERE pid = ?', [newId], (err, results) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
@@ -70,16 +84,25 @@ router.post('/', (req, res) => {
   });
 });
 
+
 // PUT update personal info
-router.put('/:id', (req, res) => {
-  const id = req.params.id;
+router.put('/:pid', (req, res) => {
+  const id = req.params.pid;
   const {
-    nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, 
-    weight, height, medicalTreatmentRights, insurance, mobile1, mobile2, facebook, 
-    idLine, email, houseNumber, hVillage, hAlley, hMoo, hRoad, hSubDistrict, hDistrict, 
-    hProvince, hPostalCode, companyName, companyNumber, cVillage, cMoo, cAlley, cRoad, 
-    cSubDistrict, cDistrict, cProvince, cPostalCode
+    nameTitle, fullName, idCard, dob, age, gender, maritalStatus, bloodType, 
+    weight, height, insurance, mobile1, mobile2, facebook, idLine, email, 
+    houseNumber, hVillage, hAlley, hMoo, hRoad, hSubDistrict, hDistrict, 
+    hProvince, hPostalCode, companyName, companyNumber, cVillage, cMoo, cAlley, 
+    cRoad, cSubDistrict, cDistrict, cProvince, cPostalCode
   } = req.body;
+
+  // จัดการกับค่า array ก่อนนำไปใช้ใน SQL
+  const medicalTreatmentRights = Array.isArray(req.body.medicalTreatmentRights)
+    ? req.body.medicalTreatmentRights.join(',')
+    : '';
+  const occupation = Array.isArray(req.body.occupation)
+    ? req.body.occupation.join(',')
+    : '';
 
   const query = `UPDATE personalInfo SET 
     nameTitle = ?, fullName = ?, idCard = ?, dob = ?, age = ?, gender = ?, maritalStatus = ?, occupation = ?, bloodType = ?, 
@@ -87,21 +110,21 @@ router.put('/:id', (req, res) => {
     idLine = ?, email = ?, houseNumber = ?, hVillage = ?, hAlley = ?, hMoo = ?, hRoad = ?, hSubDistrict = ?, 
     hDistrict = ?, hProvince = ?, hPostalCode = ?, companyName = ?, companyNumber = ?, cVillage = ?, cMoo = ?, 
     cAlley = ?, cRoad = ?, cSubDistrict = ?, cDistrict = ?, cProvince = ?, cPostalCode = ? 
-    WHERE id = ?`;
+    WHERE pid = ?`;
 
   db.query(query, [
     nameTitle, fullName, idCard, dob, age, gender, maritalStatus, occupation, bloodType, 
     weight, height, medicalTreatmentRights, insurance, mobile1, mobile2, facebook, 
     idLine, email, houseNumber, hVillage, hAlley, hMoo, hRoad, hSubDistrict, hDistrict, 
     hProvince, hPostalCode, companyName, companyNumber, cVillage, cMoo, cAlley, cRoad, 
-    cSubDistrict, cDistrict, cProvince, cPostalCode, id
+    cSubDistrict, cDistrict, cProvince, cPostalCode, pid
   ], (err) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
     
     // Retrieve the updated record
-    db.query('SELECT * FROM personalInfo WHERE id = ?', [id], (err, results) => {
+    db.query('SELECT * FROM personalInfo WHERE pid = ?', [id], (err, results) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
@@ -114,6 +137,7 @@ router.put('/:id', (req, res) => {
     });
   });
 });
+
 
 // ---------------------- Occupation Details Routes ----------------------
 

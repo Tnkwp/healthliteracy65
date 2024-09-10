@@ -23,8 +23,8 @@ function App() {
         <Route path="/" element={<HealthLiteracy />} />
         <Route path="findHistory" element={<FindHistory />} />
         <Route path="result" element={<Result />} />
-        <Route path='edit' element={<EditPage />} />
-        <Route path='summaryPage' element={<SummaryPage />} />
+        <Route path='/personalInfo/edit/:pid' element={<EditPage />} />
+        <Route path='/personalInfo/:pid' element={<SummaryPage />} />
         <Route path='personalInfoForm' element={<PersonalInfoForm />} />
         <Route path='healthAssessmentTable' element={<HealthAssessmentTable />} />
         <Route path='chart' element={<Chart />} />
