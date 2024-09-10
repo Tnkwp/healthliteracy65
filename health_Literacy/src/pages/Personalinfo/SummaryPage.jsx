@@ -48,7 +48,7 @@ const PersonalInfoSummary = () => {
         <section className="mb-8 ">
           <h2 className="font-bold mb-4 text-base">1. ข้อมูลส่วนบุคคล</h2>
           <div className="grid gap-y-3">
-<<<<<<< HEAD
+
             <div className='flex'>
               <div className="flex ml-5">ชื่อ - นามสกุล : <span className="font-medium ml-4">{personalInfo.nameTitle}{personalInfo.fullName}</span></div> 
               <div className="flex ml-10">เลขที่บัตรประจำตัวประชาชน : <span className="font-medium ml-4">{personalInfo.idCard}</span></div>
@@ -71,7 +71,7 @@ const PersonalInfoSummary = () => {
               <div className="flex ml-5">สิทธิการรักษาพยาบาล : <span className="font-medium ml-4">{personalInfo.medicalTreatmentRights}</span></div> 
               <div className="flex ml-20">ประกันสุขภาพ : <span className="font-medium ml-4">{personalInfo.insurance}</span></div>
             </div>
-=======
+
            <div className='flex'>
            <div className="flex ml-5">ชื่อ - นามสกุล : <span className="font-medium ml-4 border-b border-dotted w-full text-cennter border-black">นายอนุวัตร สวัสดิ์วงศ์</span></div> 
            <div className="flex ml-10">เลขที่บัตรประจำตัวประชาชน : <span className="font-medium ml-4">1234567890123</span></div>
@@ -94,7 +94,7 @@ const PersonalInfoSummary = () => {
            <div className="flex ml-5">สิทธิการรักษาพยาบาล : <span className="font-medium ml-4">สิทธประกันสังคม</span></div> 
            <div className="flex ml-20">ประกันสุขภาพ : <span className="font-medium ml-4">มี</span></div>
           </div> 
->>>>>>> 6cc943755036205ca890cc6b892dd470ec7f8d91
+
           </div>
         </section>
 
@@ -102,7 +102,7 @@ const PersonalInfoSummary = () => {
         <section className="mb-8">
           <h2 className="font-bold mb-4 text-base">2. ข้อมูลการติดต่อ</h2>
           <div className="grid gap-y-3">
-<<<<<<< HEAD
+
             <div className='flex'>
               <div className="flex ml-5">เบอร์โทรศัพท์ : <span className="font-medium ml-4">{personalInfo.mobile1}</span></div> 
               <div className="flex ml-20">Facebook : <span className="font-medium ml-4">{personalInfo.facebook}</span></div>
@@ -120,7 +120,7 @@ const PersonalInfoSummary = () => {
            <div className="flex ml-5">ID Line : <span className="font-medium ml-4">089-9966999</span></div> 
            <div className="flex ml-20">E-mail : <span className="font-medium ml-4">anuwatsawatdiwong99@gmail.com</span></div>
           </div>
->>>>>>> 6cc943755036205ca890cc6b892dd470ec7f8d91
+
           </div>
         </section>
 
@@ -128,7 +128,7 @@ const PersonalInfoSummary = () => {
         <section className="mb-8">
           <h2 className="font-bold mb-4 text-base">3. ที่อยู่ปัจจุบัน</h2>
           <div className="grid gap-y-3">
-<<<<<<< HEAD
+
             <div className='flex'>
               <div className="flex ml-5">บ้านเลขที่ : <span className="font-medium ml-4">{personalInfo.houseNumber}</span></div> 
               <div className="flex ml-20">หมู่บ้าน : <span className="font-medium ml-4">{personalInfo.hVillage}</span></div>
@@ -160,7 +160,6 @@ const PersonalInfoSummary = () => {
            <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">พะเยา</span></div> 
            <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">56160</span></div>
           </div>
->>>>>>> 6cc943755036205ca890cc6b892dd470ec7f8d91
           </div>
         </section>
 
@@ -168,7 +167,6 @@ const PersonalInfoSummary = () => {
         <section className="mb-8">
           <h2 className="font-bold mb-4 text-base">4. ข้อมูลที่ทำงาน</h2>
           <div className="grid gap-y-3">
-<<<<<<< HEAD
             <div className='flex'>
               <div className="flex ml-5">ชื่อสถานที่ทำงาน/บริษัท : <span className="font-medium ml-4">{personalInfo.companyName}</span></div> 
             </div>
@@ -187,7 +185,6 @@ const PersonalInfoSummary = () => {
               <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">{personalInfo.cProvince}</span></div> 
               <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">{personalInfo.cPostalCode}</span></div>
             </div>
-=======
           <div className='flex'>
            <div className="flex ml-5">ชื่อสถานที่ทำงาน/บริษัท : <span className="font-medium ml-4">สำนักงานเทศบาลตำบลเชียงม่วน</span></div> 
           </div>
@@ -206,7 +203,6 @@ const PersonalInfoSummary = () => {
            <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">พะเยา</span></div> 
            <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">56160</span></div>
           </div>
->>>>>>> 6cc943755036205ca890cc6b892dd470ec7f8d91
           </div>
         </section>
 
