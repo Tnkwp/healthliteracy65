@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const questions = [
   {
@@ -44,11 +44,40 @@ const questions = [
   },
 ];
 
+
+
+const optionScores = {
+  'ทำได้ง่ายมาก': 4,
+  'ทำได้ง่าย': 3,
+  'ทำได้ยาก': 2,
+  'ทำได้ยากมาก': 1,
+};
+
 const HealthLiteracyQuiz = () => {
   const [answers, setAnswers] = useState({});
+  const navigate = useNavigate();
 
   const handleAnswer = (questionId, answer) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
+  };
+
+  const calculateScore = () => {
+    return Object.keys(answers).reduce((totalScore, questionId) => {
+      const selectedOption = answers[questionId];
+      return totalScore + (optionScores[selectedOption] || 0);
+    }, 0);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const totalScore = calculateScore();
+    
+    // Save score to localStorage or send it to backend
+    localStorage.setItem('Access score', totalScore);
+    console.log('Access score',totalScore);
+    navigate('/quiz2')
+    // Navigate to results page, passing the score
+    
   };
 
   return (
@@ -68,7 +97,7 @@ const HealthLiteracyQuiz = () => {
           </p>
           </div>
         </div>
-        <form>
+        <form onSubmit={handleSubmit}>
           {questions.map((question) => (
             <div key={question.id} className="mb-6 bg-white p-6 rounded-lg shadow-lg">
               <p className="mb-4 text-lg font-medium text-gray-800">{question.id}. {question.text}</p>
@@ -89,11 +118,9 @@ const HealthLiteracyQuiz = () => {
             </div>
           ))}
           <div className="flex justify-end">
-            <Link to="/quiz2">
-              <button type="submit" className="bg-green-700 text-white py-3 px-6 rounded-lg text-lg font-medium shadow-md hover:bg-green-800 transition duration-300">
+            <button type="submit" className="bg-green-700 text-white py-3 px-6 rounded-lg text-lg font-medium shadow-md hover:bg-green-800 transition duration-300">
               ถัดไป
-              </button>
-            </Link>
+            </button>
           </div>
         </form>
       </main>

@@ -162,7 +162,7 @@ function PersonalInfoForm() {
     <div className="bg-gray-100 min-h-screen flex justify-center items-center p-4">
       <div className='bg-white shadow-lg rounded-lg w-full max-w-3xl p-8'>
         <form onSubmit={handleSubmit} className="space-y-8">
-        <header className="bg-green-500 border-b-2 p-2 mb-6 rounded-md">
+        <header className="bg-[#0EB24E] border-b-2 p-2 mb-6 rounded-md">
           <h1 className="text-xl font-semibol text-white text-start ">ประวัติส่วนตัว</h1>
         </header>
 

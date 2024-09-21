@@ -1,18 +1,32 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SuccessPopup from '../Components/SuccessPopup';
-
 
 const HealthLiteracyQuiz5 = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [answers, setAnswers] = useState({});
+  const navigate = useNavigate();
 
   const handleAnswer = (questionId, answer) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
   };
 
-  const handleSave = (e) => {
-    e.preventDefault(); // Prevent form submission
+  const calculateScore = () => {
+    return Object.keys(answers).reduce((totalScore, questionId) => {
+      const selectedOption = answers[questionId];
+      return totalScore + (optionScores[selectedOption] || 0);
+    }, 0);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const totalScore = calculateScore();
+    
+    // Save score to localStorage
+    localStorage.setItem('Practice score', totalScore);
+    console.log('Practice score', totalScore);
+    
+    // Show popup after a short delay
     setTimeout(() => {
       setShowPopup(true);
     }, 500);
@@ -25,9 +39,10 @@ const HealthLiteracyQuiz5 = () => {
   const viewResult = () => {
     setShowPopup(false);
     // Implement result viewing logic here
+    navigate('/result-page'); // Replace with your result page route
   };
 
-const questions = [
+  const questions = [
   {
     id: 1,
     text: 'กินอาหาร ไม่หวาน ไม่มัน ไม่เค็ม',
@@ -235,6 +250,12 @@ const questions = [
   },
 ];
 
+  const optionScores = {
+    'ทำได้ง่ายมาก': 4,
+    'ทำได้ง่าย': 3,
+    'ทำได้ยาก': 2,
+    'ทำได้ยากมาก': 1,
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
@@ -244,7 +265,7 @@ const questions = [
             <Link to="/quiz4">
               <button className="text-2xl text-green-600 mr-2">&lt;</button>
             </Link>
-            <h2 className="text-3xl font-bold flex-grow text-start text-green-600">
+             <h2 className="text-3xl font-bold flex-grow text-start text-green-600">
               การประเมินศักยภาพของผู้ดูแลสุขภาพ
             </h2>
           </div>
@@ -255,44 +276,47 @@ const questions = [
             <p className="text-xl text-black">
               <strong>ด้านที่ 5 การปฏิบัติ</strong> โดยทั่วไป ใน 1 ปี ท่านปฏิบัติในเรื่องต่อไปนี้หรือไม่ ยาก ง่ายระดับใด
             </p>
-          </div>
-        </div>
-        <form onSubmit={handleSave}>
-          {questions.map((question) => (
-            <div key={question.id} className="mb-6 bg-white p-6 rounded-lg shadow-lg">
-              <p className="mb-4 text-lg font-medium text-gray-800">
+       
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {questions.map((question) => (
+                 <div key={question.id} className="bg-white p-6 rounded-lg shadow-lg">
+                  <p className="mb-4 text-lg font-medium text-gray-800">
                 {question.id}. {question.text}
               </p>
-              {question.options.map((option) => (
-                <div key={option} className="mb-2 flex items-center">
-                  <input
-                    type="radio"
-                    id={`${question.id}-${option}`}
-                    name={`question-${question.id}`}
-                    value={option}
-                    onChange={() => handleAnswer(question.id, option)}
-                    checked={answers[question.id] === option}
-                    className="mr-3 accent-green-600"
-                  />
-                  <label htmlFor={`${question.id}-${option}`} className="text-base text-gray-700">
-                    {option}
-                  </label>
+                  {question.options.map((option, index) => (
+                    <div key={index} className="mb-1">
+                      <label>
+                        <input
+                          type="radio"
+                          id={`${question.id}-${option}`}
+                          name={`question-${question.id}`}
+                          value={option}
+                          onChange={() => handleAnswer(question.id, option)}
+                          checked={answers[question.id] === option}
+                          className="mr-3 accent-green-600"
+                          aria-labelledby={`${question.id}-${option}`}
+                        />
+                        <label htmlFor={`${question.id}-${option}`} className="text-base text-gray-700">
+                         {option}
+                    </label>
+                      </label>
+                    </div>
+                  ))}
                 </div>
               ))}
-            </div>
-          ))}
-          <div className="flex justify-center mt-8">
-            <button
-              type="submit"
-              className="bg-green-700 text-white py-3 px-6 rounded-lg text-lg font-medium shadow-md hover:bg-green-800 transition duration-300"
-            >
-              บันทึกข้อมูล
-            </button>
+              <div className='flex justify-end'>
+                <button type="submit" className="bg-green-600 text-white py-2 px-4 rounded">บันทึก</button>
+              </div>
+              
+            </form>
           </div>
-        </form>
+        </div>
       </main>
       {showPopup && (
-        <SuccessPopup onClose={closePopup} onViewResult={viewResult} />
+        <SuccessPopup
+          onClose={closePopup}
+          onViewResult={viewResult}
+        />
       )}
     </div>
   );

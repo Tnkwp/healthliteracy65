@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const questions = [
   {
@@ -94,11 +94,38 @@ const questions = [
   },
 ];
 
+const optionScores = {
+  'ทุกครั้ง': 4,
+  'บ่อยครั้ง': 3,
+  'บางครั้ง': 2,
+  'ไม่เคยทำ': 1,
+};
+
 const HealthLiteracyQuiz3 = () => {
   const [answers, setAnswers] = useState({});
+  const navigate = useNavigate();
 
   const handleAnswer = (questionId, answer) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
+  };
+
+  const calculateScore = () => {
+    return Object.keys(answers).reduce((totalScore, questionId) => {
+      const selectedOption = answers[questionId];
+      return totalScore + (optionScores[selectedOption] || 0);
+    }, 0);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const totalScore = calculateScore();
+    
+    // Save score to localStorage or send it to backend
+    localStorage.setItem('Questioning score', totalScore);
+    console.log('Questioning score', totalScore);
+    navigate('/quiz4')
+    // Navigate to results page, passing the score
+    
   };
 
   return (
@@ -106,22 +133,28 @@ const HealthLiteracyQuiz3 = () => {
       <main className="p-6 flex-grow">
         <div className="mb-8">
           <div className="flex items-center mb-4">
-            <Link to="/quiz2"><button className="text-2xl text-green-600 mr-2">&lt;</button></Link>
-            <h2 className="text-3xl font-bold flex-grow text-start text-green-600">การประเมินศักยภาพของผู้ดูแลสุขภาพ</h2>
+            <Link to="/quiz2">
+              <button className="text-2xl text-green-600 mr-2">&lt;</button>
+            </Link>
+            <h2 className="text-3xl font-bold flex-grow text-start text-green-600">
+              การประเมินศักยภาพของผู้ดูแลสุขภาพ
+            </h2>
           </div>
           <div className='mt-8 ml-7'>
             <p className="text-xl text-black mb-2">
-            <strong>แบบประเมินนี้ใช้เพื่อประเมินความรอบรู้ด้านสุขภาพของคนไทย</strong>
-          </p>
-          <p className="text-xl text-black">
-            <strong>ด้านที่ 3 การทบทวน ซักถาม</strong> ท่านทำสิ่งต่อไปนี้ บ่อยแค่ไหน?
-          </p>
+              <strong>แบบประเมินนี้ใช้เพื่อประเมินความรอบรู้ด้านสุขภาพของคนไทย</strong>
+            </p>
+            <p className="text-xl text-black">
+              <strong>ด้านที่ 3 การทบทวน ซักถาม</strong> ท่านทำสิ่งต่อไปนี้ บ่อยแค่ไหน?
+            </p>
           </div>
         </div>
-        <form>
+        <form onSubmit={handleSubmit} className="space-y-6">
           {questions.map((question) => (
-            <div key={question.id} className="mb-6 bg-white p-6 rounded-lg shadow-lg">
-              <p className="mb-4 text-lg font-medium text-gray-800">{question.id}. {question.text}</p>
+            <div key={question.id} className="bg-white p-6 rounded-lg shadow-lg">
+              <p className="mb-4 text-lg font-medium text-gray-800">
+                {question.id}. {question.text}
+              </p>
               {question.options.map((option) => (
                 <div key={option} className="mb-2 flex items-center">
                   <input
@@ -132,18 +165,22 @@ const HealthLiteracyQuiz3 = () => {
                     onChange={() => handleAnswer(question.id, option)}
                     checked={answers[question.id] === option}
                     className="mr-3 accent-green-600"
+                    aria-label={option}
                   />
-                  <label htmlFor={`${question.id}-${option}`} className="text-base text-gray-700">{option}</label>
+                  <label htmlFor={`${question.id}-${option}`} className="text-base text-gray-700">
+                    {option}
+                  </label>
                 </div>
               ))}
             </div>
           ))}
           <div className="flex justify-end">
-            <Link to="/quiz4">
-              <button type="submit" className="bg-green-700 text-white py-3 px-6 rounded-lg text-lg font-medium shadow-md hover:bg-green-800 transition duration-300">
+            <button 
+              type="submit" 
+              className="bg-green-700 text-white py-3 px-6 rounded-lg text-lg font-medium shadow-md hover:bg-green-800 transition duration-300"
+            >
               ถัดไป
-              </button>
-            </Link>
+            </button>
           </div>
         </form>
       </main>

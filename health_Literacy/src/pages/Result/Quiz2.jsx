@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const questions = [
   {
@@ -69,11 +69,38 @@ const questions = [
   },
 ];
 
+const optionScores = {
+  'เข้าใจง่ายมาก': 4,
+  'เข้าใจง่าย': 3,
+  'เข้าใจยาก': 2,
+  'เข้าใจยากมาก': 1,
+};
+
 const HealthLiteracyQuiz2 = () => {
   const [answers, setAnswers] = useState({});
+  const navigate = useNavigate();
 
   const handleAnswer = (questionId, answer) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
+  };
+
+  const calculateScore = () => {
+    return Object.keys(answers).reduce((totalScore, questionId) => {
+      const selectedOption = answers[questionId];
+      return totalScore + (optionScores[selectedOption] || 0);
+    }, 0);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const totalScore = calculateScore();
+    
+    // Save score to localStorage or send it to backend
+    localStorage.setItem('Understanding score', totalScore);
+    console.log('Understanding score',totalScore);
+    navigate('/quiz3')
+    // Navigate to results page, passing the score
+    
   };
 
   return (
@@ -86,14 +113,14 @@ const HealthLiteracyQuiz2 = () => {
           </div>
           <div className='mt-8 ml-7'>
             <p className="text-xl text-black mb-2">
-            <strong>แบบประเมินนี้ใช้เพื่อประเมินความรอบรู้ด้านสุขภาพของคนไทย</strong>
-          </p>
-          <p className="text-xl text-black">
-            <strong>ด้านที่ 2 </strong> การเข้าใจข้อมูล ท่านมีความเข้าใจในสิ่งต่อไปนี้ระดับใด
-          </p>
+              <strong>แบบประเมินนี้ใช้เพื่อประเมินความรอบรู้ด้านสุขภาพของคนไทย</strong>
+            </p>
+            <p className="text-xl text-black">
+              <strong>ด้านที่ 2 การเข้าใจข้อมูล </strong>  ท่านมีความเข้าใจในสิ่งต่อไปนี้ระดับใด
+            </p>
           </div>
         </div>
-        <form>
+        <form onSubmit={handleSubmit}>
           {questions.map((question) => (
             <div key={question.id} className="mb-6 bg-white p-6 rounded-lg shadow-lg">
               <p className="mb-4 text-lg font-medium text-gray-800">{question.id}. {question.text}</p>
@@ -107,6 +134,7 @@ const HealthLiteracyQuiz2 = () => {
                     onChange={() => handleAnswer(question.id, option)}
                     checked={answers[question.id] === option}
                     className="mr-3 accent-green-600"
+                    aria-label={option}
                   />
                   <label htmlFor={`${question.id}-${option}`} className="text-base text-gray-700">{option}</label>
                 </div>
@@ -114,11 +142,9 @@ const HealthLiteracyQuiz2 = () => {
             </div>
           ))}
           <div className="flex justify-end">
-            <Link to="/quiz3">
-              <button type="submit" className="bg-green-700 text-white py-3 px-6 rounded-lg text-lg font-medium shadow-md hover:bg-green-800 transition duration-300">
+            <button type="submit" className="bg-green-700 text-white py-3 px-6 rounded-lg text-lg font-medium shadow-md hover:bg-green-800 transition duration-300">
               ถัดไป
-              </button>
-            </Link>
+            </button>
           </div>
         </form>
       </main>

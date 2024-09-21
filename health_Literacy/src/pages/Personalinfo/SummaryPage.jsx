@@ -40,7 +40,7 @@ const PersonalInfoSummary = () => {
     <div className="bg-gray-100 min-h-screen flex justify-center items-center p-4">
       <div className="bg-white shadow-lg rounded-lg w-full max-w-3xl p-8">
         {/* Header */}
-        <header className="bg-green-500 border-b-2 p-2 mb-6 rounded-md">
+        <header className="bg-[#0EB24E] border-b-2 p-2 mb-6 rounded-md">
           <h1 className="text-xl font-semibold text-white text-start">ประวัติส่วนตัว</h1>
         </header>
 
@@ -48,7 +48,6 @@ const PersonalInfoSummary = () => {
         <section className="mb-8 ">
           <h2 className="font-bold mb-4 text-base">1. ข้อมูลส่วนบุคคล</h2>
           <div className="grid gap-y-3">
-
             <div className='flex'>
               <div className="flex ml-5">ชื่อ - นามสกุล : <span className="font-medium ml-4">{personalInfo.nameTitle}{personalInfo.fullName}</span></div> 
               <div className="flex ml-10">เลขที่บัตรประจำตัวประชาชน : <span className="font-medium ml-4">{personalInfo.idCard}</span></div>
@@ -67,34 +66,6 @@ const PersonalInfoSummary = () => {
               <div className="flex ml-20">น้ำหนัก : <span className="font-medium ml-4">{personalInfo.weight}</span></div>
               <div className="flex ml-20">ส่วนสูง : <span className="font-medium ml-4">{personalInfo.height}</span></div>
             </div>
-            <div className='flex'>
-              <div className="flex ml-5">สิทธิการรักษาพยาบาล : <span className="font-medium ml-4">{personalInfo.medicalTreatmentRights}</span></div> 
-              <div className="flex ml-20">ประกันสุขภาพ : <span className="font-medium ml-4">{personalInfo.insurance}</span></div>
-            </div>
-
-           <div className='flex'>
-           <div className="flex ml-5">ชื่อ - นามสกุล : <span className="font-medium ml-4 border-b border-dotted w-full text-cennter border-black">นายอนุวัตร สวัสดิ์วงศ์</span></div> 
-           <div className="flex ml-10">เลขที่บัตรประจำตัวประชาชน : <span className="font-medium ml-4">1234567890123</span></div>
-          </div>
-           <div className='flex'>
-           <div className="flex ml-5">เพศ : <span className="font-medium ml-4">ชาย</span></div> 
-           <div className="flex ml-20">วัน/เดือน/ปี เกิด : <span className="font-medium ml-4">29/07/2512</span></div>
-           <div className="flex ml-20">อายุ : <span className="font-medium ml-4">55 ปี</span></div>
-          </div>
-          <div className='flex'>
-           <div className="flex ml-5">สถานภาพ : <span className="font-medium ml-4">สมรส/อยู่ด้วยกัน</span></div> 
-           <div className="flex ml-20">อาชีพ : <span className="font-medium ml-4">พนักงาน/ลูกจ้างในหน่วยงานภาครัฐ</span></div>
-          </div>
-          <div className='flex'>
-           <div className="flex ml-5">หมู่โลหิต : <span className="font-medium ml-4">O</span></div> 
-           <div className="flex ml-20">น้ำหนัก : <span className="font-medium ml-4">70 กิโลกรัม</span></div>
-           <div className="flex ml-20">ส่วนสูง : <span className="font-medium ml-4">175 เซนติเมตร</span></div>
-          </div>
-          <div className='flex'>
-           <div className="flex ml-5">สิทธิการรักษาพยาบาล : <span className="font-medium ml-4">สิทธประกันสังคม</span></div> 
-           <div className="flex ml-20">ประกันสุขภาพ : <span className="font-medium ml-4">มี</span></div>
-          </div> 
-
           </div>
         </section>
 
@@ -111,16 +82,6 @@ const PersonalInfoSummary = () => {
               <div className="flex ml-5">ID Line : <span className="font-medium ml-4">{personalInfo.idLine}</span></div> 
               <div className="flex ml-20">E-mail : <span className="font-medium ml-4">{personalInfo.email}</span></div>
             </div>
-=======
-           <div className='flex'>
-           <div className="flex ml-5">เบอร์โทรศัพท์ : <span className="font-medium ml-4">089-9966999</span></div> 
-           <div className="flex ml-20">Facebook : <span className="font-medium ml-4">Anuwat Sawatdiwong</span></div>
-          </div>
-          <div className='flex'>
-           <div className="flex ml-5">ID Line : <span className="font-medium ml-4">089-9966999</span></div> 
-           <div className="flex ml-20">E-mail : <span className="font-medium ml-4">anuwatsawatdiwong99@gmail.com</span></div>
-          </div>
-
           </div>
         </section>
 
@@ -144,22 +105,6 @@ const PersonalInfoSummary = () => {
               <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">{personalInfo.hProvince}</span></div> 
               <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">{personalInfo.hPostalCode}</span></div>
             </div>
-=======
-          <div className='flex'>
-           <div className="flex ml-5">บ้านเลขที่ : <span className="font-medium ml-4">165/3</span></div> 
-           <div className="flex ml-20">หมู่บ้าน : <span className="font-medium ml-4">บ้านหลวง</span></div>
-           <div className="flex ml-20">หมู่ : <span className="font-medium ml-4">1</span></div> 
-           <div className="flex ml-10">ซอย : <span className="font-medium ml-4">-</span></div>
-          </div>
-          <div className='flex'>
-           <div className="flex ml-5">ถนน : <span className="font-medium ml-4">-</span></div> 
-           <div className="flex ml-20">ตำบล/แขวง : <span className="font-medium ml-4">เชียงม่วน</span></div>
-           <div className="flex ml-20">อำเภอ/เขต : <span className="font-medium ml-4">เชียงม่วน</span></div>
-          </div>
-          <div className='flex'>
-           <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">พะเยา</span></div> 
-           <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">56160</span></div>
-          </div>
           </div>
         </section>
 
@@ -185,24 +130,6 @@ const PersonalInfoSummary = () => {
               <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">{personalInfo.cProvince}</span></div> 
               <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">{personalInfo.cPostalCode}</span></div>
             </div>
-          <div className='flex'>
-           <div className="flex ml-5">ชื่อสถานที่ทำงาน/บริษัท : <span className="font-medium ml-4">สำนักงานเทศบาลตำบลเชียงม่วน</span></div> 
-          </div>
-          <div className='flex'>
-           <div className="flex ml-5">เลขที่ : <span className="font-medium ml-4">165/3</span></div> 
-           <div className="flex ml-20">หมู่บ้าน : <span className="font-medium ml-4">บ้านมาง</span></div>
-           <div className="flex ml-20">หมู่ : <span className="font-medium ml-4">1</span></div> 
-           <div className="flex ml-10">ซอย : <span className="font-medium ml-4">-</span></div>
-          </div>
-          <div className='flex'>
-           <div className="flex ml-5">ถนน : <span className="font-medium ml-4">-</span></div> 
-           <div className="flex ml-20">ตำบล/แขวง : <span className="font-medium ml-4">บ้านมาง</span></div>
-           <div className="flex ml-20">อำเภอ/เขต : <span className="font-medium ml-4">เชียงม่วน</span></div>
-          </div>
-          <div className='flex'>
-           <div className="flex ml-5">จังหวัด : <span className="font-medium ml-4">พะเยา</span></div> 
-           <div className="flex ml-20">รหัสไปรษณีย์ : <span className="font-medium ml-4">56160</span></div>
-          </div>
           </div>
         </section>
 
@@ -211,7 +138,7 @@ const PersonalInfoSummary = () => {
          
             <button onClick={handleEdit} className="bg-red-500 text-white px-8 py-3 rounded-lg">แก้ไข</button>
           
-          <Link to="/quiz">
+          <Link to="/assessment">
             <button className="bg-green-500 text-white px-8 py-3 rounded-lg">เริ่มทำแบบประเมิน</button>
           </Link>
         </div>

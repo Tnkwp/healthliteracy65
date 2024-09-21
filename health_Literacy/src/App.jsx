@@ -15,6 +15,7 @@ import Quiz2 from './pages/Result/Quiz2';
 import Quiz3 from './pages/Result/Quiz3';
 import Quiz4 from './pages/Result/Quiz4';
 import Quiz5 from './pages/Result/Quiz5';
+import Assessment from './pages/Result/assesment';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path='personalInfoForm' element={<PersonalInfoForm />} />
         <Route path='healthAssessmentTable' element={<HealthAssessmentTable />} />
         <Route path='chart' element={<Chart />} />
+        <Route path='assessment' element={<Assessment />} />
         <Route path='quiz' element={<Quiz />} />
         <Route path='quiz2' element={<Quiz2 />} />
         <Route path='quiz3' element={<Quiz3 />} />
